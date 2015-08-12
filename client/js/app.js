@@ -29,7 +29,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 (function() {
     'use strict';
-    window.app = angular.module('soletta-devapp', ['ngRoute', 'jsTree.directive', 'hljs', 'ngLoadScript',
+    window.app = angular.module('soletta-devapp', ['ngRoute', 'jsTree.directive', 'hljs', 'ngLoadScript', 'cfp.hotkeys',
                                 'angularSpinner','datatables', 'ui.ace', 'ng-context-menu', 'ui.bootstrap.collapse']).
                                 config(['$routeProvider',
                                         function($routeProvider) {
