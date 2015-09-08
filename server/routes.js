@@ -210,6 +210,7 @@
             var exec = require('child_process').exec;
             var code = req.body.params.code;
             var conf = req.body.params.conf;
+            var insp = req.body.params.inspector;
             if (!code) {
                 res.sendStatus(1);
             } else {
@@ -221,7 +222,11 @@
                     res.sendStatus(1);
                 } else {
                     var script = scripts_dir() + "/fbp-runner.sh";
-                    script = script + ' start ' + tmp_dir(current_user(req));
+                    var inspCommand = " ";
+                    if (insp) {
+                        inspCommand = "-inspector ";
+                    }
+                    script = script + ' start' + inspCommand + tmp_dir(current_user(req));
                     if (conf) {
                         script = script + " " + conf;
                     }

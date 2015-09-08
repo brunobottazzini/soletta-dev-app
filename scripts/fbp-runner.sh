@@ -40,7 +40,7 @@ SERVICE="fbp-runner@"$(systemd-escape $USER_TMP)
 echo "SERVICE="$SERVICE
 SCRIPT="$USER_TMP/fbp_runner.fbp"
 systemctl stop $SERVICE
-if [ $1 == "start" ]; then
+if [ $1 == "start" ] || [ $1 == "start-inspector" ]; then
     syntax=`sol-fbp-runner -c $SCRIPT | grep OK`
     systemctl $1 $SERVICE
     if [ -n "$syntax" ]; then

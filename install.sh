@@ -114,7 +114,7 @@ if [ -n "$1" ]; then
     SERVER_PATH=$1
 fi
 
-su -c "cp $SERVER_PATH/scripts/units/fbp-runner@.service $SYSTEMD_SERVICE_PATH/ &&
+su -c "cp $SERVER_PATH/scripts/units/fbp-*@.service $SYSTEMD_SERVICE_PATH/ &&
        cp $SERVER_PATH/scripts/units/soletta-dev-app-server.service.in $SYSTEMD_SERVICE_PATH/soletta-dev-app-server.service &&
        sed -i "s@PATH@"$SERVER_PATH"@" $SYSTEMD_SERVICE_PATH/soletta-dev-app-server.service &&
        sed -i "s@"NODE_BIN_NAME"@"$NODE_BIN_NAME"@" $SYSTEMD_SERVICE_PATH/soletta-dev-app-server.service"
