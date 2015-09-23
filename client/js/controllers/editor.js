@@ -273,7 +273,8 @@
                         $http.post('/api/fbp/run',
                                 {params: {
                                     "code": fbpCode,
-                                    "conf": conf
+                                    "conf": conf,
+                                    "inspector": $scope.inspector
                                 }
                             }).success(function(data) {
                                 if (data == 0) {

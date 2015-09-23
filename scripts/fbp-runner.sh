@@ -36,17 +36,27 @@ if [ $# -eq 3 ]; then
 fi
 USER_TMP="$2"
 echo "USER_TMP="$USER_TMP
-SERVICE="fbp-runner@"$(systemd-escape $USER_TMP)
+SERVICE="fbp*-runner@"$(systemd-escape $USER_TMP)
 echo "SERVICE="$SERVICE
 SCRIPT="$USER_TMP/fbp_runner.fbp"
 systemctl stop $SERVICE
-if [ $1 == "start" ] || [ $1 == "start-inspector" ]; then
+if [ $1 == "start" ]; then
     syntax=`sol-fbp-runner -c $SCRIPT | grep OK`
+    SERVICE="fbp-runner@"$(systemd-escape $USER_TMP)
     systemctl $1 $SERVICE
     if [ -n "$syntax" ]; then
 	    exit 0
     else
 	    exit 1
+    fi
+elif [ $1 == "start-inspector" ]; then
+    syntax=`sol-fbp-runner -c $SCRIPT | grep OK`
+    SERVICE="fbp-inspector-runner@"$(systemd-escape $USER_TMP)
+    systemctl start $SERVICE
+    if [ -n "$syntax" ]; then
+        exit 0
+    else
+        exit 1
     fi
 else
     st=`systemctl status $SERVICE | grep "Active:"`

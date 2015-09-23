@@ -459,6 +459,7 @@
             var script = scripts_dir() + "/fbp-runner.sh";
             script = script + ' stop ' + tmp_dir(current_user(req));
             child = exec("sh " + script);
+            console.log("sh " + script);
             child.on('close', function(code) {
                 console.log('closing code: ' + code);
                 res.sendStatus(code);
