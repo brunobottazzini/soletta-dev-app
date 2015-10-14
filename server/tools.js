@@ -33,7 +33,7 @@ module.exports = function () {
     require('./configuration.js')();
 
     this.home_dir = function(user) {
-        return __dirname + '/../repos/' + user + '/';
+        return __dirname + '/../repos/demo/';
     };
 
     this.tmp_dir = function(user) {
