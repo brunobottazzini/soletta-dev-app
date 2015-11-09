@@ -85,6 +85,8 @@
                 editor.getSession().setMode("ace/mode/fbp");
                 $scope.fileViewer = '# Write FBP Code here.';
                 $scope.buttonSyncDisabled = false;
+
+
                 $scope.nodeSelected = function(e, data) {
                     var _l = data.node.li_attr;
                     dataTree = data;
@@ -98,6 +100,8 @@
                     if (_l.isLeaf) {
                         FetchFileFactory.fetchFile(_l.base).then(function(data) {
                             var _d = data.data;
+                            $scope.imageData = _d;
+                            $scope.imageDialog();
                             var previousContent = editor.getSession().getValue();
                             if (typeof _d == 'object') {
                                 _d = JSON.stringify(_d, undefined, 2);
@@ -218,6 +222,44 @@
                       $scope.checkSyntaxStart();
                     }
                 });
+
+                function str2ab(str) {
+                    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+                    var bufView = new Uint16Array(buf);
+                    for (var i=0, strLen=str.length; i<strLen; i++) {
+                        bufView[i] = str.charCodeAt(i);
+                    }
+                    return buf;
+                }
+
+                $scope.imageDialog = function() {
+                    //$scope.imageData = encodeURI($scope.imageData);
+                    //$scope.imageData = window.btoa($scope.imageData);
+                    $scope.imageData = window.btoa(unescape(encodeURIComponent($scope.imageData)));
+                    document.getElementById("myimage").src = "data:image/jpg;base64," + $scope.imageData;
+                    var dialog = $('<div></div>').html($compile('<img ng-src="data:image/jpg;base64,{{imageData}}"/>')($scope)).
+                             dialog({
+                                  title: "Image",
+                                  autoOpen: false,
+                                  modal: true,
+                                  position: { at: "center top"},
+                                  height: 'auto',
+                                  width: '75%',
+                                  show: { effect: "fade", duration: 300 },
+                                  hide: {effect: "fade", duration: 300 },
+                                  resizable: 'disable',
+                                  scrollable: 'disable',
+                                  buttons: {
+                                      Close: function() {
+                                          $(this).dialog("close");
+                                      }
+                                  },
+                                  close: function(ev, ui){
+                                      $(this).dialog("close");
+                                  }
+                              });
+                      dialog.dialog("open");
+                }
 
                 $scope.openRunDialog = function() {
                     var dialog = $('<div></div>').html($compile('<table cellpadding="0" cellspacing="0" border="0"' +
