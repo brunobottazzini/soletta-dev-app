@@ -1,0 +1,57 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This is an example that simulates two ticket machines:
+# one for regular and other for preferencial tickets.
+# And a cashier, that when press the button call the next
+# ticket, preferencials first. It won't call anybody
+# if such queues are empty already.
+#
+# To test it, press 'p' to emit a preferencial ticket,
+# 'n' for regular ticket and 'c' to call the next ticket.
+
+# preferencial tickets emissor
+PrefBt(keyboard/boolean:binary_code=112)
+PrefTicket(int/accumulator:setup_value=0|0)
+PrefPrinter(console)
+PrefLess(int/less)
+
+PrefBt OUT -> PULSE_IF_TRUE _(converter/boolean-to-empty) OUT -> INC PrefTicket
+PrefTicket OUT -> IN PrefPrinter
+PrefTicket OUT -> IN[1] PrefLess
+
+# regular tickets emissor
+NormBt(keyboard/boolean:binary_code=110)
+NormTicket (int/accumulator:setup_value=0|0)
+NormPrinter(console)
+NormLess(int/less)
+
+NormBt OUT -> PULSE_IF_TRUE _(converter/boolean-to-empty) OUT -> INC NormTicket
+NormTicket OUT -> IN NormPrinter
+NormTicket OUT -> IN[1] NormLess
+
+# cashier calls all preferencial tickets before regular tickets.
+CashierBt(keyboard/boolean:binary_code=99)
+CallPref(boolean/and)
+CallPrefTicket(int/accumulator:setup_value=0|0)
+CallPrefPrinter(console)
+CouldCallNorm(boolean/and)
+CallNorm(boolean/and)
+CallNormTicket(int/accumulator:setup_value=0|0)
+CallNormPrinter(console)
+
+CashierBt OUT -> IN[0] CallPref
+PrefLess OUT -> IN[1] CallPref
+
+CallPref OUT -> IN _(boolean/filter) TRUE -> INC CallPrefTicket
+CallPrefTicket OUT -> IN[0] PrefLess
+CallPrefTicket OUT -> IN CallPrefPrinter
+
+CashierBt OUT -> IN[0] CouldCallNorm
+PrefLess OUT -> IN _(boolean/not) OUT -> IN[1] CouldCallNorm
+
+CouldCallNorm OUT -> IN[0] CallNorm
+NormLess OUT -> IN[1] CallNorm
+
+CallNorm OUT -> IN _(boolean/filter) TRUE -> INC CallNormTicket
+CallNormTicket OUT -> IN[0] NormLess
+CallNormTicket OUT -> IN CallNormPrinter

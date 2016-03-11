@@ -1,0 +1,16 @@
+#!/usr/bin/env sol-fbp-runner
+
+
+# To make a post
+# curl --data "value=true" http://localhost:80/boolean -v
+#
+# To make a get and ask for the response be a json
+# curl -H "Accept:application/json"  http://localhost:80/boolean -v
+#
+# To get only if the value has changed since Mon, 17 Aug 2015 15:05:38 GMT
+# curl  -H "If-Since-Modified:Mon, 17 Aug 2015 15:05:38 GMT"  http://localhost:80/boolean -v
+
+# Reads key 'a' (code 97) from keyboard (stdin) and toggles state,
+
+keyboard(keyboard/boolean:binary_code=97,toggle=true) OUT -> IN boolean(http-server/boolean:path=/boolean,value=false)
+boolean OUT -> IN console(console)

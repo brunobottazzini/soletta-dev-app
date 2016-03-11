@@ -1,0 +1,28 @@
+
+json_object_str(constant/string:value="{\"bla\": 3}")
+json_array_str(constant/string:value="[1,2,3]")
+error_json_object_str(constant/string:value="{\"invalid json\": 3")
+error_json_array_str(constant/string:value="[1,2,3")
+
+json_object_blob(converter/string-to-blob)
+json_object(converter/blob-to-json-object)
+
+json_array_blob(converter/string-to-blob)
+json_array(converter/blob-to-json-array)
+
+validator_json_object(test/blob-validator:expected="{\"bla\": 3}", expect_terminating_null_byte=true)
+validator_json_array(test/blob-validator:expected="[1,2,3]", expect_terminating_null_byte=true)
+
+json_object_str OUT -> IN json_object_blob OUT -> IN json_object
+json_object OUT -> IN _(converter/json-object-to-blob) OUT -> IN validator_json_object
+validator_json_object OUT -> RESULT json_object_test(test/result)
+error_json_object_str OUT -> IN _(converter/string-to-blob) OUT -> IN _(converter/blob-to-json-object) ERROR -> IN _(converter/empty-to-boolean) OUT -> PASS invalid_json_object_test(test/result)
+
+json_array_str OUT -> IN json_array_blob OUT -> IN json_array
+json_array OUT -> IN _(converter/json-array-to-blob) OUT -> IN validator_json_array
+validator_json_array OUT -> RESULT json_array_test(test/result)
+error_json_array_str OUT -> IN _(converter/string-to-blob) OUT -> IN _(converter/blob-to-json-array) ERROR -> IN _(converter/empty-to-boolean) OUT -> PASS invalid_json_array_test(test/result)
+
+json_object_blob OUT -> IN _(converter/blob-to-json-array) ERROR -> IN _(converter/empty-to-boolean) OUT -> PASS invalid_json_array_test2(test/result)
+
+json_array_blob OUT -> IN _(converter/blob-to-json-object) ERROR -> IN _(converter/empty-to-boolean) OUT -> PASS invalid_json_object_test2(test/result)

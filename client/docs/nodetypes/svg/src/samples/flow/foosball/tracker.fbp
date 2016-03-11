@@ -1,0 +1,14 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This is a subflow to be used in fossball.fbp
+#
+# It exports two input ports (RESET and WIN_SCORE) and one output port
+# (WON).
+
+INPORT=score.RESET:RESET
+INPORT=won.IN[1]:WIN_SCORE
+OUTPORT=won.OUT:WON
+
+goal(gtk/pushbutton) OUT -> PULSE_IF_TRUE toggle(converter/boolean-to-empty) OUT -> INC score(int/accumulator) OUT -> IN output(gtk/label)
+
+score OUT -> IN[0] won(int/greater-or-equal)

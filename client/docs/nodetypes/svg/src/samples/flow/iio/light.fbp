@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Print iio luminance reading each second
+# iio_device: will first try any device whose name is 'tsl2561'. If fails,
+# will try to create it using the 'create' command. If it fails, tries
+# IIO device whose id is '0'.
+
+light(MyLight)
+timer(timer)
+
+timer OUT -> TICK light OUT -> IN _(console)

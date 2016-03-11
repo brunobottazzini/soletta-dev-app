@@ -1,0 +1,12 @@
+
+input1(test/boolean-generator:sequence=TTTT)
+
+validator1(test/boolean-validator:sequence=FTFT)
+input1 OUT -> IN toggle1(boolean/toggle:initial_state=true)
+toggle1 OUT -> IN validator1
+validator1 OUT -> RESULT t1(test/result)
+
+validator2(test/boolean-validator:sequence=TFTF)
+input1 OUT -> IN toggle2(boolean/toggle:initial_state=false)
+toggle2 OUT -> IN validator2
+validator2 OUT -> RESULT t2(test/result)

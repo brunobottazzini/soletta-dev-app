@@ -1,0 +1,14 @@
+
+INPORT=temp_avg.IN:TEMP_AVG
+INPORT=temp_low.IN:TEMP_LOW
+INPORT=temp_high.IN:TEMP_HIGH
+OUTPORT=temp_string.OUT:OUT
+
+temp_string(string/concatenate)
+_(constant/string:value="Temperature (in celsius) avg=") OUT -> IN[0] temp_string
+_(constant/string:value=", low=") OUT -> IN[2] temp_string
+_(constant/string:value=", high=") OUT -> IN[4] temp_string
+
+temp_avg(converter/float-to-string:format_spec="{:.2f}") OUT -> IN[1] temp_string
+temp_low(converter/float-to-string:format_spec="{:.2f}") OUT -> IN[3] temp_string
+temp_high(converter/float-to-string:format_spec="{:.2f}") OUT -> IN[5] temp_string

@@ -1,0 +1,28 @@
+
+
+two(constant/int:value=2)
+six(constant/int:value=6)
+
+mod(int/modulo)
+less(int/less)
+pulse(converter/boolean-to-empty)
+accumulator(int/accumulator)
+switcher(switcher/int)
+
+val0(test/int-validator:sequence="0 1 3 5")
+val1(test/int-validator:sequence="2 4 6")
+
+accumulator OUT -> DIVIDEND mod
+two OUT -> DIVISOR mod
+
+mod OUT -> OUT_PORT switcher
+
+accumulator OUT -> IN[0] switcher
+
+accumulator OUT -> IN[0] less
+six OUT -> IN[1] less
+
+less OUT -> PULSE_IF_TRUE pulse OUT -> INC accumulator
+
+switcher OUT[0] -> IN val0 OUT -> RESULT switcher_port0(test/result)
+switcher OUT[1] -> IN val1 OUT -> RESULT switcher_port1(test/result)

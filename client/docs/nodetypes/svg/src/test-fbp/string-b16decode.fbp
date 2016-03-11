@@ -1,0 +1,9 @@
+
+hello_world(constant/string:value="Hello World")
+hello_world_as_b16(constant/string:value="48656c6c6f20576f726c64")
+
+hello_world_as_b16 OUT -> IN b16dec(string/b16decode)
+
+b16dec STRING -> IN[0] hello_world_string_cmp(string/compare)
+hello_world OUT -> IN[1] hello_world_string_cmp
+hello_world_string_cmp EQUAL -> RESULT _(test/result)

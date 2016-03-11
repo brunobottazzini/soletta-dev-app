@@ -1,0 +1,44 @@
+
+const_true(constant/boolean:value=true)
+const_byte(constant/byte:value=127)
+const_int(constant/int:value=10)
+const_float(constant/float:value=10)
+
+result_bool(constant/boolean:value=true)
+result_byte(constant/byte:value=127)
+result_int(constant/int:value=9)
+result_float(constant/float:value=10)
+byte_to_boolean(converter/byte-to-boolean)
+
+equal_bool(boolean/and)
+equal_byte(byte/bitwise-and)
+equal_int(int/equal)
+equal_float(float/equal)
+
+
+map_int(int/map:use_input_range=true,output_range=min:0|max:10)
+map_float(float/map:use_input_range=true,output_range=min:0|max:10)
+
+bool_empty(converter/boolean-to-empty)
+empty_bool(converter/empty-to-boolean)
+byte_empty(converter/byte-to-empty:range_min=0,range_max=127)
+empty_byte(converter/empty-to-byte:output_value=127)
+int_empty(converter/int-to-empty:range=min:5|max:10)
+empty_int(converter/empty-to-int:output_value=9)
+float_empty(converter/float-to-empty:range=min:4.5)
+empty_float(converter/empty-to-float:output_value=10)
+
+const_true OUT -> PULSE_IF_TRUE bool_empty OUT -> IN empty_bool
+const_byte OUT -> IN byte_empty OUT -> IN empty_byte
+const_int OUT -> IN map_int OUT -> IN int_empty OUT -> IN empty_int
+const_float OUT -> IN map_float OUT -> IN float_empty OUT -> IN empty_float
+
+empty_bool OUT -> IN[0] equal_bool
+empty_byte OUT -> IN[0] equal_byte
+empty_int OUT -> IN[0] equal_int
+empty_float OUT -> IN[0] equal_float
+
+result_bool OUT -> IN[1] equal_bool OUT -> RESULT r_bool(test/result)
+result_byte OUT -> IN[1] equal_byte OUT -> IN byte_to_boolean OUT -> RESULT r_byte(test/result)
+result_int OUT -> IN[1] equal_int OUT -> RESULT r_int(test/result)
+result_float OUT -> IN[1] equal_float OUT -> RESULT r_float(test/result)

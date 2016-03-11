@@ -1,0 +1,13 @@
+
+# Check if parser isn't getting a substring from option fields key.
+# It shouldn't match 'red' on 'red_max'
+Color(constant/rgb:value=red_max:80|red:20)
+Converter(converter/rgb-to-int)
+Red(constant/int:value=20)
+Equal(int/equal)
+
+Color OUT -> IN Converter
+Converter RED -> IN[0] Equal
+Red OUT -> IN[1] Equal
+
+Equal OUT -> RESULT test_parser_suboptions(test/result)

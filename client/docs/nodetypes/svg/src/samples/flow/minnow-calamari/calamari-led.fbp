@@ -1,0 +1,9 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This example links the Calamari lever (SPI) to intensity light of
+# Led1 and Led2 (PWM leds), as defined in sol-flow.json in this
+# directory.
+
+lever(LedLever) OUT -> INTENSITY led1(Led1)
+lever OUT -> INTENSITY led2(Led2)
+

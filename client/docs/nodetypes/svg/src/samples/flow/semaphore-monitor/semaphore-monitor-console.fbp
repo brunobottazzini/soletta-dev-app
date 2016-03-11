@@ -1,0 +1,31 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This file will output Soletta's semaphore monitor status.
+#
+# It will check the build status every 5 seconds by using another FBP
+# that provides the logic to get semaphore build status.
+#
+# It is an example of:
+#
+#  - timer node type (timeout mainloop primitive)
+#
+#  - using 'DECLARE' statements to include other FBP as a node type
+#
+#  - console node type
+#
+# Diagram:
+#
+# .-------.
+# | timer |OUT----------.
+# `-------'             |        .---------.          .---------.
+#                       +->UPDATE| monitor |STATUS->IN| console |
+# .----------------.    |        `---------'          `---------'
+# | constant/empty |OUT-'
+# `----------------'
+
+DECLARE=semaphore-monitor:fbp:semaphore-monitor.fbp
+
+monitor(semaphore-monitor:url="https://semaphoreci.com/api/v1/projects/3cbed176-fbb9-4ca0-aacd-5b429e8166da/526888/shields_badge.svg") STATUS -> IN _(console:prefix="Soletta Semaphore Build Status: ")
+
+_(constant/empty) OUT -> UPDATE monitor
+_(timer:interval=5000) OUT -> UPDATE monitor

@@ -1,0 +1,83 @@
+
+str_hello_world(constant/string:value="Ħěĺļō Ɯőŗŀď")
+str_hello_hello(constant/string:value="Ħěĺļō Ħěĺļō")
+
+result_hello(constant/string:value="Ħěĺļō")
+result_world(constant/string:value="Ɯőŗŀď")
+result_hello_world(constant/string:value="Ħěĺļō Ɯőŗŀď")
+
+str_hello_world OUT -> IN regexp_search_01(string/regexp-search:regexp="Ɯőŗŀď",index=0)
+regexp_search_01 OUT -> IN[0] cmp_01(string/compare)
+result_world OUT -> IN[1] cmp_01
+cmp_01 EQUAL -> RESULT result_01(test/result)
+
+str_hello_world OUT -> IN regexp_search_02(string/regexp-search:regexp="Ħ...ō",index=0)
+regexp_search_02 OUT -> IN[0] cmp_02(string/compare)
+result_hello OUT -> IN[1] cmp_02
+cmp_02 EQUAL -> RESULT result_02(test/result)
+
+str_hello_world OUT -> IN regexp_search_03(string/regexp-search:regexp="Ɯőŗŀď$",index=0)
+regexp_search_03 OUT -> IN[0] cmp_03(string/compare)
+result_world OUT -> IN[1] cmp_03
+cmp_03 EQUAL -> RESULT result_03(test/result)
+
+str_hello_world OUT -> IN regexp_search_04(string/regexp-search:regexp="Ɯőŗŀ[dďđ]$",index=0)
+regexp_search_04 OUT -> IN[0] cmp_04(string/compare)
+result_world OUT -> IN[1] cmp_04
+cmp_04 EQUAL -> RESULT result_04(test/result)
+
+str_hello_world OUT -> IN regexp_search_05(string/regexp-search:regexp="(\\p{L}+)\\s(\\p{L}+)",index=0)
+regexp_search_05 OUT -> IN[0] cmp_05(string/compare)
+result_hello_world OUT -> IN[1] cmp_05
+cmp_05 EQUAL -> RESULT result_05(test/result)
+
+str_hello_world OUT -> IN regexp_search_06(string/regexp-search:regexp="(\\p{L}+)\\s(\\p{L}+)",index=1)
+regexp_search_06 OUT -> IN[0] cmp_06(string/compare)
+result_hello OUT -> IN[1] cmp_06
+cmp_06 EQUAL -> RESULT result_06(test/result)
+
+str_hello_hello OUT -> IN regexp_search_07(string/regexp-search:regexp="(\\p{L}\\p{L}\\p{L}\\p{L}\\p{L})\\s\\g1",index=0)
+regexp_search_07 OUT -> IN[0] cmp_07(string/compare)
+str_hello_hello OUT -> IN[1] cmp_07
+cmp_07 EQUAL -> RESULT result_07(test/result)
+
+str_hello_hello OUT -> IN regexp_search_08(string/regexp-search:regexp="(\\p{L}\\p{L}\\p{L}\\p{L}\\p{L})\\s\\g{-1}",index=0)
+regexp_search_08 OUT -> IN[0] cmp_08(string/compare)
+str_hello_hello OUT -> IN[1] cmp_08
+cmp_08 EQUAL -> RESULT result_08(test/result)
+
+str_hello_hello OUT -> IN regexp_search_09(string/regexp-search:regexp="(?<hello>\\p{L}\\p{L}\\p{L}\\p{L}\\p{L})\\s\\g{hello}",index=0)
+regexp_search_09 OUT -> IN[0] cmp_09(string/compare)
+str_hello_hello OUT -> IN[1] cmp_09
+cmp_09 EQUAL -> RESULT result_09(test/result)
+
+str_hello_world OUT -> IN regexp_search_10(string/regexp-search:regexp="(\\p{L}{5})\\s(\\p{L}{5})",index=2)
+regexp_search_10 OUT -> IN[0] cmp_10(string/compare)
+result_world OUT -> IN[1] cmp_10
+cmp_10 EQUAL -> RESULT result_10(test/result)
+
+_(string/uuid) OUT -> IN regexp_search_11(string/regexp-search:regexp="((?:[a-f]|[0-9]){8})((?:(?:[a-f]|[0-9]){4}){3})((?:[a-f]|[0-9]){12})")
+regexp_search_11 LENGTH -> IN[0] cmp_11(int/equal)
+_(constant/int:value=4) OUT -> IN[1] cmp_11
+cmp_11 OUT -> RESULT result_11(test/result)
+
+_(string/uuid:with_hyphens=false) OUT -> IN regexp_search_12(string/regexp-search:regexp="((?:[a-f]|[0-9]){8})((?:(?:[a-f]|[0-9]){4}){3})((?:[a-f]|[0-9]){12})")
+regexp_search_12 LENGTH -> IN[0] cmp_12(int/equal)
+_(constant/int:value=4) OUT -> IN[1] cmp_12
+cmp_12 OUT -> RESULT result_12(test/result)
+
+_(string/uuid:with_hyphens=true,upcase=true) OUT -> IN regexp_search_13(string/regexp-search:regexp="((?:[A-F]|[0-9]){8}-)((?:(?:[A-F]|[0-9]){4}-){3})((?:[A-F]|[0-9]){12})")
+regexp_search_13 LENGTH -> IN[0] cmp_13(int/equal)
+_(constant/int:value=4) OUT -> IN[1] cmp_13
+cmp_13 OUT -> RESULT result_13(test/result)
+
+_(platform/machine-id) OUT -> IN regexp_search_14(string/regexp-search:regexp="((?:[a-f]|[0-9]){32})")
+regexp_search_14 LENGTH -> IN[0] cmp_14(int/equal)
+_(constant/int:value=2) OUT -> IN[1] cmp_14
+cmp_14 OUT -> RESULT result_14(test/result)
+
+_(platform/machine-id) OUT -> IN regexp_replace_15(string/regexp-replace:regexp="((?:[a-f]|[0-9]){8})((?:(?:[a-f]|[0-9]){4}))((?:(?:[a-f]|[0-9]){4}))((?:(?:[a-f]|[0-9]){4}))((?:[a-f]|[0-9]){12})",to="\\1-\\2-\\3-\\4-\\5")
+regexp_replace_15 OUT -> IN regexp_search_15(string/regexp-search:regexp="((?:[a-f]|[0-9]){8}-)((?:(?:[a-f]|[0-9]){4}-){3})((?:[a-f]|[0-9]){12})")
+regexp_search_15 LENGTH -> IN[0] cmp_15(int/equal)
+_(constant/int:value=4) OUT -> IN[1] cmp_15
+cmp_15 OUT -> RESULT result_15(test/result)

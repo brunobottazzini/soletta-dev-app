@@ -1,0 +1,21 @@
+#!/usr/bin/env sol-fbp-runner
+
+# sol-fbp-runner lcd/grove-lcd-display.fbp
+
+# This is a translation of
+# Grove_RGB_BackLight_LCD/Display/Display.ino, from
+# https://github.com/Seeed-Studio/Sketchbook_Starter_Kit_for_Arduino.git
+
+lcd(LCDChar)
+
+true(constant/boolean:value=true)
+state_switch(boolean/toggle:initial_state=false)
+
+initial_string(constant/string:value="hello, world!")
+initial_string OUT -> PUT_STRING lcd
+
+state_switch OUT -> DISPLAY_ON lcd
+
+timer(timer:interval=500)
+
+timer OUT -> IN state_switch

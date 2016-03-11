@@ -1,0 +1,14 @@
+
+# 1 0 0 0 0 1 1 0
+Byte(constant/byte:value=134)
+# 1 0 0 0 0 0 1 0
+Byte731(constant/byte:value=130)
+
+Byte OUT -> IN ByteBits(converter/byte-to-bits)
+ByteBits OUT[7] -> IN[7] BitsByte(converter/bits-to-byte)
+ByteBits OUT[3] -> IN[3] BitsByte
+ByteBits OUT[1] -> IN[1] BitsByte
+
+BitsByte OUT -> IN  _(converter/byte-to-int) OUT -> IN[0] Equal(int/equal)
+Byte731 OUT -> IN _(converter/byte-to-int) OUT -> IN[1] Equal
+Equal OUT -> RESULT test_converter_byte_bits_byte(test/result)

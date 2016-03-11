@@ -1,0 +1,69 @@
+#!/usr/bin/env sol-fbp-runner
+
+StringTimestamp(converter/string-to-timestamp)
+StringTimestampFormat(converter/string-to-timestamp:format="%D %T")
+TimestampString(converter/timestamp-to-string:format="%Y-%m-%dT%H:%M:%S")
+TimestampStringFormat(converter/timestamp-to-string:format="%D %T")
+
+MkTime(timestamp/make-time)
+
+Year(constant/int:value=2015)
+Month(constant/int:value=8)
+Day(constant/int:value=26)
+Hour(constant/int:value=15)
+Minute(constant/int:value=20)
+Second(constant/int:value=59)
+NanoSecond(constant/int:value=0)
+
+TimestampConverted(constant/string:value="2015-08-26T15:20:59")
+TimestampConvertedFormat(constant/string:value="08/26/15 15:20:59")
+
+String(constant/string:value="2016-09-23T09:30:00")
+StringFormat(constant/string:value="09/23/16 09:30:00")
+
+StringConverted(timestamp/make-time)
+
+CYear(constant/int:value=2016)
+CMonth(constant/int:value=9)
+CDay(constant/int:value=23)
+CHour(constant/int:value=9)
+CMinute(constant/int:value=30)
+CSecond(constant/int:value=0)
+CNanoSecond(constant/int:value=0)
+
+StringEqual(string/compare)
+StringEqualFormat(string/compare)
+TimestampEqual(timestamp/equal)
+TimestampEqualFormat(timestamp/equal)
+
+Year OUT -> YEAR MkTime
+Month OUT -> MONTH MkTime
+Day OUT -> MONTH_DAY MkTime
+Hour OUT -> HOUR MkTime
+Minute OUT -> MINUTE MkTime
+Second OUT -> SECOND MkTime
+NanoSecond OUT -> NANO_SECOND MkTime
+
+TimestampConverted OUT -> IN[0] StringEqual
+MkTime OUT -> IN TimestampString OUT -> IN[1] StringEqual
+StringEqual EQUAL -> RESULT result_timestamp_convert(test/result)
+
+TimestampConvertedFormat OUT -> IN[0] StringEqualFormat
+MkTime OUT -> IN TimestampStringFormat OUT -> IN[1] StringEqualFormat
+StringEqualFormat EQUAL -> RESULT result_timestamp_format_convert(test/result)
+
+CYear OUT -> YEAR StringConverted
+CMonth OUT -> MONTH StringConverted
+CDay OUT -> MONTH_DAY StringConverted
+CHour OUT -> HOUR StringConverted
+CMinute OUT -> MINUTE StringConverted
+CSecond OUT -> SECOND StringConverted
+CNanoSecond OUT -> NANO_SECOND StringConverted
+
+StringConverted OUT -> IN[0] TimestampEqual
+String OUT -> IN StringTimestamp OUT -> IN[1] TimestampEqual
+TimestampEqual OUT -> RESULT result_string_convert(test/result)
+
+StringConverted OUT -> IN[0] TimestampEqualFormat
+StringFormat OUT -> IN StringTimestampFormat OUT -> IN[1] TimestampEqualFormat
+TimestampEqualFormat OUT -> RESULT result_string_format_convert(test/result)

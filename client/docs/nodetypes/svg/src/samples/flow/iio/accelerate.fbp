@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Print iio acceleration reading each second
+# iio_device: will first try any device whose name is 'lis3dh'. If fails,
+# will try to create it using the 'create' command. If it fails, tries
+# IIO device whose id is '0'.
+
+accel(MyAccelerate)
+timer(timer)
+
+timer OUT -> TICK accel OUT -> IN _(console)

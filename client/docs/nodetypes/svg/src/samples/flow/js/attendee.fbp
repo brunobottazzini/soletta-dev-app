@@ -1,0 +1,25 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This is a sample where you have the attendee (that will call the next in line)
+# and two different lines, common and preferential (that has higher priority).
+#
+# Everytime the a line button is pressed (common or preferential) it generates
+# a new number to be called, preferential numbers are 1-99 and common are 101-999.
+#
+# In order to do so we created our custom JS node type, MyAttendee from attendee.js
+# file.
+
+DECLARE=MyAttendee:js:attendee.js
+
+_(constant/int:value=999) OUT -> IN[0] common_eq(int/equal)
+_(constant/int:value=99) OUT -> IN[0] preferential_eq(int/equal)
+
+common_btn(gtk/pushbutton) OUT -> IN _(boolean/filter) TRUE -> INC common_acc(int/accumulator:initial_value=100,setup_value=min:100|max:999|step:1)
+common_acc OUT -> IN[1] common_eq OUT -> IN _(boolean/filter) TRUE -> INC common_acc
+common_acc OUT -> IN _(int/filter:min=101) OUT -> IN_COMMON attendee(MyAttendee) OUT_COMMON -> IN common_out(gtk/label)
+
+preferential_btn(gtk/pushbutton) OUT -> IN _(boolean/filter) TRUE -> INC preferential_acc(int/accumulator:setup_value=min:0|max:99|step:1)
+preferential_acc OUT -> IN[1] preferential_eq OUT -> IN _(boolean/filter) TRUE -> INC preferential_acc
+preferential_acc OUT -> IN _(int/filter:min=1) OUT -> IN_PREFERENTIAL attendee OUT_PREFERENTIAL -> IN preferential_out(gtk/label)
+
+attendee_btn(gtk/pushbutton) OUT -> IN _(boolean/filter) TRUE -> IN_ATTENDEE attendee OUT_ATTENDEE -> IN attendee_out(gtk/label)

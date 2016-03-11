@@ -1,0 +1,36 @@
+
+med(constant/byte:value=0x80)
+low(constant/byte:value=0x0c)
+high(constant/byte:value=0xde)
+
+low OUT -> IN[0] equal(byte/equal)
+low OUT -> IN[1] equal
+equal OUT -> RESULT r_equal(test/result)
+
+med OUT -> IN[0] not_equal(byte/not-equal)
+high OUT -> IN[1] not_equal
+not_equal OUT -> RESULT r_not_equal(test/result)
+
+med OUT -> IN[0] greater(byte/greater)
+low OUT -> IN[1] greater
+greater OUT -> RESULT r_greater(test/result)
+
+med OUT -> IN[0] greater_or_equal_greater(byte/greater-or-equal)
+low OUT -> IN[1] greater_or_equal_greater
+greater_or_equal_greater OUT -> RESULT r_greater_or_equal_greater(test/result)
+
+low OUT -> IN[0] greater_or_equal_equal(byte/greater-or-equal)
+low OUT -> IN[1] greater_or_equal_equal
+greater_or_equal_equal OUT -> RESULT r_greater_or_equal_equal(test/result)
+
+low OUT -> IN[0] less(byte/less)
+high OUT -> IN[1] less
+less OUT -> RESULT r_less(test/result)
+
+low OUT -> IN[0] less_or_equal_less(byte/less-or-equal)
+med OUT -> IN[1] less_or_equal_less
+less_or_equal_less OUT -> RESULT r_less_or_equal_less(test/result)
+
+high OUT -> IN[0] less_or_equal_equal(byte/less-or-equal)
+high OUT -> IN[1] less_or_equal_equal
+less_or_equal_equal OUT -> RESULT r_less_or_equal_equal(test/result)

@@ -1,0 +1,8 @@
+
+timer(timer:interval=1) OUT -> IN toggle1(boolean/toggle:initial_state=false)
+toggle1 OUT -> IN validator1(test/boolean-validator:sequence=TFTFTFTF)
+validator1 OUT -> RESULT t1(test/result)
+
+timer OUT -> IN toggle2(boolean/toggle:initial_state=true)
+toggle2 OUT -> IN validator2(test/boolean-validator:sequence=FTFTFTFT)
+validator2 OUT -> RESULT t2(test/result)

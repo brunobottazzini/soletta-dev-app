@@ -1,0 +1,38 @@
+#!/usr/bin/env sol-fbp-runner
+
+# sol-fbp-runner grove-lc-set-cursor.fbp
+
+# This is a translation of
+# Grove_RGB_BackLight_LCD/setCursor/setCursor.ino, from
+# https://github.com/Seeed-Studio/Sketchbook_Starter_Kit_for_Arduino.git
+
+# This will loop from 'a' to 'z', filling in the whole display with
+# each single letter before changing to the next (to start again)
+
+timer_cols(timer:interval=200)
+
+timer_chars(timer:interval=6400)
+timer_chars OUT -> INC chars
+
+timer_rows(timer:interval=3200)
+timer_rows OUT -> INC rows
+
+lcd(LCDChar)
+
+cols(int/accumulator:setup_value=min:0|max:15|step:1)
+rows(int/accumulator:setup_value=min:0|max:1|step:1)
+
+# 'a' to 'z'
+chars(int/accumulator:setup_value=min:97|max:122|step:1,initial_value=97)
+chars OUT -> IN to_byte(converter/int-to-byte)
+
+# trick to keep a 'current char' state
+to_byte OUT -> OUTPUT_VALUE curr_char(converter/empty-to-byte:output_value=97)
+_(constant/empty) OUT -> IN curr_char
+curr_char OUT -> PUT_CHAR lcd
+
+timer_cols OUT -> INC cols
+timer_cols OUT -> IN curr_char
+
+cols OUT -> COL lcd
+rows OUT -> ROW lcd

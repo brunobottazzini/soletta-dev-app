@@ -1,0 +1,17 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This sample will exemplify how to play with a keyboard, covering
+# all supported modes: int, boolean w/o toggle, boolean with toggle,
+# boolean for press / release.
+
+kbd_keys(keyboard/int)
+keycodes(console:prefix="Keycode = ")
+kbd_keys OUT -> IN keycodes
+
+a_key(keyboard/boolean:binary_code=97)
+a_pressed(console:prefix="Key 'A' pressed = ")
+a_key OUT -> IN a_pressed
+
+b_key(keyboard/boolean:binary_code=98,toggle=true)
+b_pressed(console:prefix="Key 'B' with toggle = ")
+b_key OUT -> IN b_pressed

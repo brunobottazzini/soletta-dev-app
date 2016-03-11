@@ -1,0 +1,32 @@
+
+byte_to_boolean_within(converter/byte-to-boolean)
+true_min(constant/byte:value=10) OUT -> TRUE_MIN byte_to_boolean_within
+true_max(constant/byte:value=20) OUT -> TRUE_MAX byte_to_boolean_within
+
+below_min(constant/byte:value=9)
+above_max(constant/byte:value=21)
+within_range(constant/byte:value=15)
+byte_to_boolean_below(converter/byte-to-boolean:true_min=10,true_max=20)
+byte_to_boolean_above(converter/byte-to-boolean:true_min=10,true_max=20)
+
+below_min OUT -> IN byte_to_boolean_below
+byte_to_boolean_below OUT -> IN _(boolean/not) OUT -> RESULT result_below_range(test/result)
+
+above_max OUT -> IN byte_to_boolean_above
+byte_to_boolean_above OUT -> IN _(boolean/not) OUT -> RESULT result_above_range(test/result)
+
+within_range OUT -> IN byte_to_boolean_within
+byte_to_boolean_within OUT -> RESULT result_within_range(test/result)
+
+true(constant/boolean:value=true)
+false(constant/boolean:value=false)
+true_value(constant/byte:value=117)
+false_value(constant/byte:value=254)
+boolean_to_byte_true(converter/boolean-to-byte:true_value=117,false_value=254)
+boolean_to_byte_false(converter/boolean-to-byte:true_value=117,false_value=254)
+
+true OUT -> IN boolean_to_byte_true OUT -> IN[0] cmp_true(byte/equal)
+true_value OUT -> IN[1] cmp_true OUT -> RESULT result_true(test/result)
+
+false OUT -> IN boolean_to_byte_false OUT -> IN[0] cmp_false(byte/equal)
+false_value OUT -> IN[1] cmp_false OUT -> RESULT result_false(test/result)

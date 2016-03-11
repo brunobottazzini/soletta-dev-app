@@ -1,0 +1,14 @@
+
+
+ind(test/int-generator:sequence="1 0 1 0",interval=50)
+seq0(test/int-generator:sequence="0 1 2 3",interval=50)
+seq1(test/int-generator:sequence="8 7 6 5",interval=50)
+val(test/int-validator:sequence="8 1 6 3")
+
+switcher(switcher/int)
+
+ind OUT -> IN_PORT switcher
+seq0 OUT -> IN[0] switcher
+seq1 OUT -> IN[1] switcher
+
+switcher OUT[0] -> IN val OUT -> RESULT switcher_in_port(test/result)

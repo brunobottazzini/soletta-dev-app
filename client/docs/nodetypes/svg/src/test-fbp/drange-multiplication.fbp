@@ -1,0 +1,15 @@
+
+v0(constant/float:value=1.5)
+v2_0(constant/float:value=5.20)
+v2_1(constant/float:value=7)
+v1(constant/float:value=3.1415)
+v2_2(constant/float:value=9)
+mult(float/multiplication)
+validator(test/float-validator:sequence="32.98575 42.41025")
+
+v0 OUT -> OPERAND[0] mult
+v2_0 OUT -> OPERAND[25] mult
+v2_1 OUT -> OPERAND[25] mult
+v1 OUT -> OPERAND[1] mult
+v2_2 OUT -> OPERAND[25] mult
+mult OUT -> IN validator OUT -> RESULT float_multiplication_multiple(test/result)

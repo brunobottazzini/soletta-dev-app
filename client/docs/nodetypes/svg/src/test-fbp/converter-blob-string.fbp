@@ -1,0 +1,13 @@
+
+const_str(constant/string:value="hello world")
+str_to_blob(converter/string-to-blob)
+blob_to_str(converter/blob-to-string)
+
+const_str OUT -> IN str_to_blob OUT -> IN blob_to_str
+
+str_validator(string/compare)
+
+const_str OUT -> IN[0] str_validator
+blob_to_str OUT -> IN[1] str_validator
+
+str_validator EQUAL -> RESULT blob_converts_to_string(test/result)

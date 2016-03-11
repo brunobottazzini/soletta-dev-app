@@ -1,0 +1,6 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Reads a sol_direction_vector from socket and prints to console.
+# See direction-vector-writer.fbp, that should be executed before this.
+
+socket_direction_vector(unix-socket/direction-vector-reader:path=/tmp/direction_vector_socket) OUT -> IN console(console)

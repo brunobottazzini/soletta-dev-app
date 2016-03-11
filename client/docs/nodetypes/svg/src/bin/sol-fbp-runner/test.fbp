@@ -1,0 +1,3 @@
+
+ticker(wallclock/second) OUT -> IN output(gtk/label)
+ticker OUT -> IN another_output(Label:prefix=prefix_from_fbp)

@@ -1,0 +1,18 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This sample shows that JS node types can be used multiple times to
+# create nodes.
+#
+# c1 and c2 are different nodes, but from the same JS type, MyCounter.
+#
+# MyCounter receives a boolean value and adds or subtracts from the
+# initial counter value (0) depending on this boolean value.
+#
+# +1 for TRUE and -1 for FALSE
+
+DECLARE=MyCounter:js:mycounter.js
+
+_(timer:interval=400) OUT -> IN _(boolean/toggle) OUT -> IN filter(boolean/filter)
+
+filter TRUE -> IN c1(MyCounter) OUT -> IN _(console:prefix="c1: ")
+filter FALSE -> IN c2(MyCounter) OUT -> IN _(console:prefix="c2: ")

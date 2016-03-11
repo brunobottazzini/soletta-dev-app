@@ -1,0 +1,21 @@
+
+thirty_float(constant/float:value=30)
+minus_one(constant/float:value=-1)
+zero(constant/float:value=0)
+overflow(constant/float:value=256)
+in_range(constant/float:value=255)
+thirty_byte(constant/byte:value=30)
+
+float_to_byte(converter/float-to-byte)
+byte_to_float(converter/byte-to-float)
+
+thirty_float OUT -> IN float_to_byte
+float_to_byte OUT -> IN byte_to_float
+byte_to_float OUT -> IN[0] equal(float/equal)
+thirty_float OUT -> IN[1] equal OUT -> RESULT _(test/result)
+
+minus_one OUT -> IN _(converter/float-to-byte) OUT -> IN _(converter/byte-to-float) OUT -> IN[0] equal_zero(float/equal)
+zero OUT -> IN[1] equal_zero OUT -> RESULT underflow(test/result)
+
+overflow OUT -> IN _(converter/float-to-byte) OUT -> IN _(converter/byte-to-float) OUT -> IN[0] equal_two_five_five(float/equal)
+in_range OUT -> IN[1] equal_two_five_five OUT -> RESULT r_overflow(test/result)

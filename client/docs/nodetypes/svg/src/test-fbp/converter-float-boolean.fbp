@@ -1,0 +1,33 @@
+
+below_min(constant/float:value=9.9)
+above_max(constant/float:value=20.001)
+within_range(constant/float:value=15.38)
+float_to_boolean_below(converter/float-to-boolean:true_range=min:10|max:20)
+float_to_boolean_above(converter/float-to-boolean:true_range=min:10|max:20)
+float_to_boolean_within(converter/float-to-boolean)
+true_range(constant/float:value_spec=min:10|max:20) OUT -> TRUE_RANGE float_to_boolean_within
+
+boolean_to_float_false(converter/boolean-to-float)
+const_true_value(constant/float:value=117.83) OUT -> TRUE_VALUE boolean_to_float_false
+const_false_value(constant/float:value=1024.28) OUT -> FALSE_VALUE boolean_to_float_false
+
+below_min OUT -> IN float_to_boolean_below
+float_to_boolean_below OUT -> IN _(boolean/not) OUT -> RESULT result_below_range(test/result)
+
+above_max OUT -> IN float_to_boolean_above
+float_to_boolean_above OUT -> IN _(boolean/not) OUT -> RESULT result_above_range(test/result)
+
+within_range OUT -> IN float_to_boolean_within
+float_to_boolean_within OUT -> RESULT result_within_range(test/result)
+
+true(constant/boolean:value=true)
+false(constant/boolean:value=false)
+true_value(constant/float:value=117.83)
+false_value(constant/float:value=1024.28)
+boolean_to_float_true(converter/boolean-to-float:true_value=117.83,false_value=1024.28)
+
+true OUT -> IN boolean_to_float_true OUT -> IN[0] cmp_true(float/equal)
+true_value OUT -> IN[1] cmp_true OUT -> RESULT result_true(test/result)
+
+false OUT -> IN boolean_to_float_false OUT -> IN[0] cmp_false(float/equal)
+false_value OUT -> IN[1] cmp_false OUT -> RESULT result_false(test/result)

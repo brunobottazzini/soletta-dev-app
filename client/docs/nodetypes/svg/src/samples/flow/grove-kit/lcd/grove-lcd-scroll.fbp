@@ -1,0 +1,39 @@
+#!/usr/bin/env sol-fbp-runner
+
+# sol-fbp-runner grove-lc-scroll.fbp
+
+# This is a translation of
+# Grove_RGB_BackLight_LCD/Scroll/Scroll.ino, from
+# https://github.com/Seeed-Studio/Sketchbook_Starter_Kit_for_Arduino.git
+
+# This will start with the string at the display's origin, move it
+# past the boundaries to the left, back again to the right, till it
+# vanishes again and finally back to the initial position, just to
+# loop again.
+
+false(constant/boolean:value=false)
+string(constant/string:value="hello, world!") # strlen = 13
+string OUT -> PUT_STRING lcd(LCDChar)
+
+# zero output will be ignored at the start (1st_loop_filter's min is 1)
+acc(int/accumulator:setup_value=min:0|max:56|step:1)
+
+1st_loop_filter(int/filter:min=1,max=12) # strlen
+2nd_loop_filter(int/filter:min=13,max=40) # strlen + column span = 28
+3rd_loop_filter(int/filter:min=41,max=56) # column span = 16
+
+timer_delay(timer:interval=1000)
+false OUT -> ENABLED timer(timer:interval=150)
+
+start_loop(converter/empty-to-boolean:output_value=true)
+start_loop OUT -> ENABLED timer
+
+timer OUT -> INC acc
+acc OUT -> IN 1st_loop_filter OUT -> SCROLL_LEFT lcd
+acc OUT -> IN 2nd_loop_filter OUT -> SCROLL_RIGHT lcd
+acc OUT -> IN 3rd_loop_filter OUT -> SCROLL_LEFT lcd
+
+acc OVERFLOW -> IN loop_pause(converter/empty-to-boolean:output_value=true)
+loop_pause OUT -> ENABLED timer_delay
+loop_pause OUT -> IN _(boolean/not) OUT -> ENABLED timer
+timer_delay OUT -> IN start_loop

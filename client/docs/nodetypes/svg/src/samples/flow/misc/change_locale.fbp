@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+
+# Usage: sol-fbp-runner change_locale.fbp locale
+# This FBP will change the locale of the current machine.
+# Changing the locale may require administrator privileges
+
+Prefix(constant/string:value="The current numeric locale is: ") OUT -> IN[0] Concat(string/concatenate)
+Locale(platform/locale) OUT_NUMERIC -> IN[1] Concat OUT -> IN Console(console)
+
+_(constant/string:value="pt_BR.UTF-8") OUT -> IN_NUMERIC Locale OUT_NUMERIC -> APPLY_NUMERIC Locale

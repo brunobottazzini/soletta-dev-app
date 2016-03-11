@@ -1,0 +1,23 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This file will print random numbers as integers, float, bytes or
+# boolean to the standard output.
+#
+# Note that the same seed generates the same sequence, thus the
+# sequence is predictable given the seed is discovered.
+#
+# Use this module only to do some testing that need a repeatable
+# sequence of random numbers, otherwise find a good entropy source to
+# provide the seed.
+
+timer(timer:interval=1000)
+rI(random/int:seed=0)
+rF(random/float:seed=666)
+rB(random/byte:seed=666)
+rBool(random/boolean:seed=666)
+
+timer OUT -> IN rI OUT -> IN c1(console)
+timer OUT -> IN rF OUT -> IN c2(console)
+timer OUT -> IN rB OUT -> IN c3(console)
+timer OUT -> IN rBool OUT -> IN c4(console)
+

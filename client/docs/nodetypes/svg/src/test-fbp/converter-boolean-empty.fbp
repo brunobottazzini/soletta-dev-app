@@ -1,0 +1,14 @@
+
+true(constant/boolean:value=true)
+false(constant/boolean:value=false)
+empty_to_boolean_output_false(converter/empty-to-boolean)
+false OUT -> OUTPUT_VALUE empty_to_boolean_output_false
+boolean_to_empty_pulse_if_true(converter/boolean-to-empty)
+boolean_to_empty_pulse_if_false(converter/boolean-to-empty)
+empty_to_boolean_output_true(converter/empty-to-boolean:output_value=true)
+
+true OUT -> PULSE_IF_TRUE boolean_to_empty_pulse_if_true OUT -> IN empty_to_boolean_output_true
+empty_to_boolean_output_true OUT -> RESULT true_pulse(test/result)
+
+false OUT -> PULSE_IF_FALSE boolean_to_empty_pulse_if_false OUT -> IN empty_to_boolean_output_false
+empty_to_boolean_output_false OUT -> IN _(boolean/not) OUT -> RESULT false_pulse(test/result)

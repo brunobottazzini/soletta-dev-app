@@ -1,0 +1,45 @@
+#!/usr/bin/env sol-fbp-runner
+
+DECLARE=OpenWeather:fbp:openweathermap.fbp
+DECLARE=YahooWeather:fbp:yahoo_weather.fbp
+DECLARE=TembooWeather:fbp:temboo_weather.fbp
+DECLARE=TempDisplay:fbp:temperature_display.fbp
+
+openweather_appid(app/argv:index=1)
+temboo_username(app/argv:index=2)
+temboo_appname(app/argv:index=3)
+temboo_appid(app/argv:index=4)
+
+_(constant/empty) OUT -> IN location_get(location/freegeoip)
+location_get CITY_NAME -> IN[0] location(string/concatenate:separator=",")
+location_get COUNTRY_CODE -> IN[1] location
+location OUT -> IN _(console)
+location OUT -> IN Location(console)
+
+##Open Weather map
+location OUT -> LOCATION open_weather(OpenWeather)
+openweather_appid OUT -> APPID open_weather
+open_weather_display(TempDisplay)
+open_weather TEMP_AVG -> TEMP_AVG open_weather_display
+open_weather TEMP_LOW -> TEMP_LOW open_weather_display
+open_weather TEMP_HIGH -> TEMP_HIGH open_weather_display
+open_weather_display OUT -> IN OpenWeatherMap(console)
+
+##Yahoo Weather
+location OUT -> LOCATION yahoo_weather(YahooWeather)
+yahoo_weather_display(TempDisplay)
+yahoo_weather TEMP_AVG -> TEMP_AVG yahoo_weather_display
+yahoo_weather TEMP_LOW -> TEMP_LOW yahoo_weather_display
+yahoo_weather TEMP_HIGH -> TEMP_HIGH yahoo_weather_display
+yahoo_weather_display OUT -> IN YahooWeather(console)
+
+##Temboo Weather API
+location OUT -> LOCATION temboo_weather(TembooWeather)
+temboo_weather_display(TempDisplay)
+temboo_username OUT -> USERNAME temboo_weather
+temboo_appname OUT -> APP_NAME temboo_weather
+temboo_appid OUT -> APPID temboo_weather
+temboo_weather TEMP_AVG -> TEMP_AVG temboo_weather_display
+temboo_weather TEMP_LOW -> TEMP_LOW temboo_weather_display
+temboo_weather TEMP_HIGH -> TEMP_HIGH temboo_weather_display
+temboo_weather_display OUT -> IN TembooWeather(console)

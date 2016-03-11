@@ -1,0 +1,44 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This is a trash disposer with a pretty simple behavior, you press the
+# button it makes the base servo to spin 180 degrees and enable two
+# timers one to expire at 1.5seg and another to expire in 250ms.
+# When the 250ms timer expire it will spin the top servo to 180 degrees.
+# When the 1.5sec timer expire it will return both servos to the initial
+# position.
+
+base_servo(BaseServo)
+top_servo(TopServo)
+button(Button)
+led(Led)
+
+timer_top_servo(timer:interval=250)
+timer_reset(timer:interval=1500)
+
+# servo converter connection
+duty_cycle_base_servo(converter/boolean-to-int:false_value=1000,true_value=2000) OUT -> DUTY_CYCLE base_servo
+duty_cycle_top_servo(converter/boolean-to-int:false_value=1000,true_value=2000) OUT -> DUTY_CYCLE top_servo
+
+# initial state
+false(constant/boolean:value=false) OUT -> ENABLED timer_reset
+false OUT -> ENABLED timer_top_servo
+false OUT -> IN duty_cycle_base_servo
+false OUT -> IN duty_cycle_top_servo
+
+# button pressed, move base servo
+button OUT -> IN button_filter(boolean/filter)
+button_filter TRUE -> IN duty_cycle_base_servo
+button_filter TRUE -> ENABLED timer_reset
+button_filter TRUE -> ENABLED timer_top_servo
+button_filter TRUE -> IN led
+
+# after 250ms of button pressed
+timer_top_servo OUT -> IN _(converter/empty-to-boolean:output_value=true) OUT -> IN duty_cycle_top_servo
+timer_top_servo OUT -> IN _(converter/empty-to-boolean:output_value=false) OUT -> ENABLED timer_top_servo
+
+# after 1.5sec of button pressed
+timer_reset OUT -> IN reset_empty_to_false(converter/empty-to-boolean:output_value=false)
+reset_empty_to_false OUT -> IN duty_cycle_base_servo
+reset_empty_to_false OUT -> IN duty_cycle_top_servo
+reset_empty_to_false OUT -> IN led
+reset_empty_to_false OUT -> ENABLED timer_reset

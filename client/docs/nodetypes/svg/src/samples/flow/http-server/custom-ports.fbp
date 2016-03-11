@@ -1,0 +1,22 @@
+#!/usr/bin/env sol-fbp-runner
+
+# On this sample two server instances, binded to ports 8040 for
+# /irange and 8050 for /drange
+
+# Post:
+# curl --data "value=10&min=3&max=100&step=1" http://localhost:8040/irange -v
+#
+# JSON response:
+# curl -H "Accept:application/json"  http://localhost:8040/irange -v
+
+irange(http-server/int:path=/irange,port=8040,value=1,value_spec=min:0|max:100|step:1)
+irange OUT -> IN Int(console)
+
+# Post:
+# curl --data "value=10.2&min=3.4&max=100.000&step=1.1" http://localhost:8050/drange -v
+#
+# JSON response:
+# curl -H "Accept:application/json"  http://localhost:8050/drange -v
+
+drange(http-server/float:path=/drange,port=8050,value=1.0,value_spec=min:0|max:100.2|step:1.2)
+drange OUT -> IN Float(console)

@@ -1,0 +1,15 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Read temperature and humidity from an AM2315 device and prints them.
+# It's interesting to notice that this device needs at least two seconds
+# between two readings. As 'timer' ticks once each second, some readings
+# should return cached data - nodes behaviour when someone tries to read
+# before the two seconds interval.
+
+timer(timer)
+temp(am2315/temperature:i2c_bus=0,i2c_slave=1)
+humidity(am2315/humidity:i2c_bus=0,i2c_slave=1)
+converter(temperature/converter)
+
+timer OUT -> TICK temp KELVIN -> KELVIN converter CELSIUS -> IN _(console)
+timer OUT -> TICK humidity OUT -> IN _(console)

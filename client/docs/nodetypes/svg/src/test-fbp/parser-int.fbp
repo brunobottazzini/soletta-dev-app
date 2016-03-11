@@ -1,0 +1,14 @@
+
+Equal(int/equal)
+Constrain(int/constrain:range=min:20,use_input_range=false)
+Value(constant/int:value=1024)
+# Default max constrain value is 1023.
+# There was an issue on options parser that override maximum with
+# datatype defaults instead of node types default.
+ConstrainedValue(constant/int:value=1023)
+
+Value OUT -> IN Constrain
+Constrain OUT -> IN[0] Equal
+ConstrainedValue OUT -> IN[1] Equal
+
+Equal OUT -> RESULT test_int_parser(test/result)

@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Print iio pressure reading each second
+# iio_device: will first try any device whose name is 'mpl3115'. If fails,
+# will try to create it using the 'create' command. If it fails, tries
+# IIO device whose id is '0'.
+
+pressure(MyPressure)
+timer(timer)
+
+timer OUT -> TICK pressure OUT -> IN _(console)

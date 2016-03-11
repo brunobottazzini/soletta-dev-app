@@ -1,0 +1,16 @@
+
+smaller(constant/float:value=2)
+passed(constant/float:value=7)
+bigger(constant/float:value=20)
+
+compare_with_seven(float/equal)
+
+filter(float/filter:min=5,max=10) OUT -> IN[0] compare_with_seven
+passed OUT -> IN[1] compare_with_seven
+
+compare_with_seven OUT ->  RESULT only_output_seven(test/result)
+
+smaller OUT -> IN filter
+passed OUT -> IN filter
+bigger OUT -> IN filter
+

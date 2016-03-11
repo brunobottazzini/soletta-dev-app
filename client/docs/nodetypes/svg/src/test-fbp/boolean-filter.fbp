@@ -1,0 +1,10 @@
+
+filter_true(boolean/filter)
+filter_false(boolean/filter)
+val_true(test/boolean-validator:sequence="TTTT")
+val_false(test/boolean-validator:sequence="FF")
+
+bool_gen(test/boolean-generator:sequence="TTFFTT")
+bool_gen OUT -> IN filter_true TRUE -> IN val_true OUT -> RESULT true(test/result)
+bool_gen OUT -> IN filter_false FALSE -> IN val_false OUT -> RESULT false(test/result)
+

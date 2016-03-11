@@ -1,0 +1,23 @@
+
+dbl_min(constant/float:value=2.2250738585072014e-308)
+two(constant/float:value=2)
+zero(constant/float:value=0)
+infinite(constant/float:value=Inf)
+nan(constant/float:value=NaN)
+
+dbl_min OUT -> DIVIDEND div(float/division)
+two OUT -> DIVISOR div
+div OUT -> IN cls_subnormal(float/classify)
+cls_subnormal SUBNORMAL -> PASS r_subnormal(test/result)
+
+zero OUT -> IN cls_zero(float/classify)
+cls_zero ZERO -> PASS r_zero(test/result)
+
+infinite OUT -> IN cls_infinite(float/classify)
+cls_infinite INFINITE -> PASS r_infinite(test/result)
+
+nan OUT -> IN cls_nan(float/classify)
+cls_nan NAN -> PASS r_nan(test/result)
+
+two OUT -> IN cls_normal(float/classify)
+cls_normal NORMAL -> PASS r_normal(test/result)

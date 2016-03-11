@@ -1,0 +1,27 @@
+
+XInt(constant/int:value=20,value_spec=0|100|1)
+YInt(constant/int:value=40,value_spec=0|100|1)
+ZInt(constant/int:value=70,value_spec=0|100|1)
+int_to_direction_vector(converter/int-to-direction-vector:out_range=0|200|1)
+
+XInt OUT -> X int_to_direction_vector
+YInt OUT -> Y int_to_direction_vector
+ZInt OUT -> Z int_to_direction_vector
+
+fourty(constant/int:value=40)
+eighty(constant/int:value=80)
+one_hundred_and_fourty(constant/int:value=140)
+
+int_to_direction_vector OUT -> IN direction_vector_to_int(converter/direction-vector-to-int)
+
+direction_vector_to_int X -> IN[0] eq_fourty(int/equal)
+fourty OUT -> IN[1] eq_fourty OUT -> RESULT x(test/result)
+
+direction_vector_to_int Y -> IN[0] eq_eighty(int/equal)
+eighty OUT -> IN[1] eq_eighty OUT -> RESULT y(test/result)
+
+direction_vector_to_int Z -> IN[0] eq_one_hundred_and_fourty(int/equal)
+one_hundred_and_fourty OUT -> IN[1] eq_one_hundred_and_fourty OUT -> RESULT z(test/result)
+
+
+

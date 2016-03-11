@@ -1,0 +1,33 @@
+
+below_min(constant/int:value=9)
+above_max(constant/int:value=21)
+within_range(constant/int:value=15)
+int_to_boolean_below(converter/int-to-boolean:true_range=min:10|max:20)
+int_to_boolean_above(converter/int-to-boolean:true_range=min:10|max:20)
+int_to_boolean_within(converter/int-to-boolean)
+true_range(constant/int:value_spec=min:10|max:20) OUT -> TRUE_RANGE int_to_boolean_within
+
+boolean_to_int_false(converter/boolean-to-int)
+const_true_value(constant/int:value=117) OUT -> TRUE_VALUE boolean_to_int_false
+const_false_value(constant/int:value=1024) OUT -> FALSE_VALUE boolean_to_int_false
+
+below_min OUT -> IN int_to_boolean_below
+int_to_boolean_below OUT -> IN _(boolean/not) OUT -> RESULT result_below_range(test/result)
+
+above_max OUT -> IN int_to_boolean_above
+int_to_boolean_above OUT -> IN _(boolean/not) OUT -> RESULT result_above_range(test/result)
+
+within_range OUT -> IN int_to_boolean_within
+int_to_boolean_within OUT -> RESULT result_within_range(test/result)
+
+true(constant/boolean:value=true)
+false(constant/boolean:value=false)
+true_value(constant/int:value=117)
+false_value(constant/int:value=1024)
+boolean_to_int_true(converter/boolean-to-int:true_value=117,false_value=1024)
+
+true OUT -> IN boolean_to_int_true OUT -> IN[0] cmp_true(int/equal)
+true_value OUT -> IN[1] cmp_true OUT -> RESULT result_true(test/result)
+
+false OUT -> IN boolean_to_int_false OUT -> IN[0] cmp_false(int/equal)
+false_value OUT -> IN[1] cmp_false OUT -> RESULT result_false(test/result)

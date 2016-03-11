@@ -1,0 +1,104 @@
+#!/usr/bin/env sol-fbp-runner
+
+Time(timestamp/make-time)
+Time2(timestamp/make-time)
+TimeLess(timestamp/make-time)
+TimeGreater(timestamp/make-time)
+TimeGreaterNano(timestamp/make-time)
+
+Year(constant/int:value=2015)
+Month(constant/int:value=8)
+Day(constant/int:value=26)
+DayLess(constant/int:value=25)
+Hour(constant/int:value=15)
+Minute(constant/int:value=20)
+MinuteGreater(constant/int:value=28)
+Second(constant/int:value=59)
+NanoSecond(constant/int:value=13)
+NanoSecondGreater(constant/int:value=13000)
+
+Equal(timestamp/equal)
+NotEqual(timestamp/not-equal)
+Greater(timestamp/greater)
+GreaterNano(timestamp/greater)
+GreaterEqual(timestamp/greater-or-equal)
+GreaterEqual2(timestamp/greater-or-equal)
+Less(timestamp/less)
+LessEqual(timestamp/less-or-equal)
+LessEqual2(timestamp/less-or-equal)
+
+Year OUT -> YEAR Time
+Month OUT -> MONTH Time
+Day OUT -> MONTH_DAY Time
+Hour OUT -> HOUR Time
+Minute OUT -> MINUTE Time
+Second OUT -> SECOND Time
+NanoSecond OUT -> NANO_SECOND Time
+
+Year OUT -> YEAR Time2
+Month OUT -> MONTH Time2
+Day OUT -> MONTH_DAY Time2
+Hour OUT -> HOUR Time2
+Minute OUT -> MINUTE Time2
+Second OUT -> SECOND Time2
+NanoSecond OUT -> NANO_SECOND Time2
+
+Year OUT -> YEAR TimeLess
+Month OUT -> MONTH TimeLess
+DayLess OUT -> MONTH_DAY TimeLess
+Hour OUT -> HOUR TimeLess
+Minute OUT -> MINUTE TimeLess
+Second OUT -> SECOND TimeLess
+NanoSecond OUT -> NANO_SECOND TimeLess
+
+Year OUT -> YEAR TimeGreater
+Month OUT -> MONTH TimeGreater
+Day OUT -> MONTH_DAY TimeGreater
+Hour OUT -> HOUR TimeGreater
+MinuteGreater OUT -> MINUTE TimeGreater
+Second OUT -> SECOND TimeGreater
+NanoSecond OUT -> NANO_SECOND TimeGreater
+
+Year OUT -> YEAR TimeGreaterNano
+Month OUT -> MONTH TimeGreaterNano
+Day OUT -> MONTH_DAY TimeGreaterNano
+Hour OUT -> HOUR TimeGreaterNano
+Minute OUT -> MINUTE TimeGreaterNano
+Second OUT -> SECOND TimeGreaterNano
+NanoSecondGreater OUT -> NANO_SECOND TimeGreaterNano
+
+Time OUT -> IN[0] Equal
+Time2 OUT -> IN[1] Equal
+Equal OUT -> RESULT result_equal(test/result)
+
+Time OUT -> IN[0] NotEqual
+TimeGreater OUT -> IN[1] NotEqual
+NotEqual OUT -> RESULT result_not_equal(test/result)
+
+Time OUT -> IN[0] GreaterEqual
+TimeLess OUT -> IN[1] GreaterEqual
+GreaterEqual OUT -> RESULT result_greater_equal(test/result)
+
+Time OUT -> IN[0] GreaterEqual2
+Time2 OUT -> IN[1] GreaterEqual2
+GreaterEqual OUT -> RESULT result_greater_equal2(test/result)
+
+Time OUT -> IN[0] Greater
+TimeLess OUT -> IN[1] Greater
+Greater OUT -> RESULT result_greater(test/result)
+
+TimeGreaterNano OUT -> IN[0] GreaterNano
+Time OUT -> IN[1] GreaterNano
+GreaterNano OUT -> RESULT result_greater_nano(test/result)
+
+Time OUT -> IN[0] LessEqual
+TimeGreater OUT -> IN[1] LessEqual
+LessEqual OUT -> RESULT result_less_equal(test/result)
+
+Time OUT -> IN[0] LessEqual2
+Time2 OUT -> IN[1] LessEqual2
+LessEqual OUT -> RESULT result_less_equal2(test/result)
+
+Time OUT -> IN[0] Less
+TimeGreater OUT -> IN[1] Less
+Less OUT -> RESULT result_less(test/result)

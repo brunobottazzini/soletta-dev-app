@@ -1,0 +1,20 @@
+
+hello_world(constant/string:value="Hello World")
+hello_world_as_b64_string(constant/string:value="SGVsbG8gV29ybGQ=")
+
+# blob will contain trailing null byte (\0), thus changes the encoded string
+hello_world_as_b64_blob(constant/string:value="SGVsbG8gV29ybGQA")
+
+hello_world OUT -> STRING b64enc_string(string/b64encode)
+
+b64enc_string OUT -> IN[0] hello_world_as_b64_string_cmp(string/compare)
+hello_world_as_b64_string OUT -> IN[1] hello_world_as_b64_string_cmp
+hello_world_as_b64_string_cmp EQUAL -> RESULT _(test/result)
+
+hello_world OUT -> IN _(converter/string-to-blob) OUT -> BLOB b64enc_blob(string/b64encode)
+
+b64enc_blob OUT -> IN[0] hello_world_as_b64_blob_cmp(string/compare)
+hello_world_as_b64_blob OUT -> IN[1] hello_world_as_b64_blob_cmp
+hello_world_as_b64_blob_cmp EQUAL -> RESULT _(test/result)
+
+

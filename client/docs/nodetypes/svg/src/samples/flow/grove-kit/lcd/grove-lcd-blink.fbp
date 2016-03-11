@@ -1,0 +1,25 @@
+#!/usr/bin/env sol-fbp-runner
+
+# SOL_FLOW_MODULE_RESOLVER_CONFFILE=galileo-grove-kit.json sol-fbp-runner lcd/grove-lcd-blink.fbp
+
+# This is a translation of
+# Grove_RGB_BackLight_LCD/Blink/Blink.ino, from
+# https://github.com/Seeed-Studio/Sketchbook_Starter_Kit_for_Arduino.git
+
+true(constant/boolean:value=true)
+false(constant/boolean:value=false)
+state_switch(boolean/toggle:initial_state=false)
+
+lcd(LCDChar)
+
+initial_string(constant/string:value="hello, world!")
+initial_string OUT -> PUT_STRING lcd
+
+false OUT -> ENABLED timer(timer:interval=3000)
+true OUT -> ENABLED timer_delay(timer:interval=1000)
+
+timer_delay OUT -> IN delay_off(converter/empty-to-boolean:output_value=false)
+delay_off OUT -> ENABLED timer_delay
+delay_off OUT -> IN not(boolean/not) OUT -> ENABLED timer
+
+timer OUT -> IN state_switch OUT -> BLINK_CURSOR lcd

@@ -1,0 +1,28 @@
+
+test_01(constant/string:value="Hello, world")
+test_02(constant/string:value="cccCCC")
+test_03(constant/string:value="sssSSS")
+
+test_01 OUT -> IN test_01_lower(string/lowercase)
+test_01_lower_expected(constant/string:value="hello, world") OUT -> IN[0] test_01_lower_cmp(string/compare)
+test_01_lower OUT -> IN[1] test_01_lower_cmp EQUAL -> RESULT _(test/result)
+
+test_01 OUT -> IN test_01_upper(string/uppercase)
+test_01_upper_expected(constant/string:value="HELLO, WORLD") OUT -> IN[0] test_01_upper_cmp(string/compare)
+test_01_upper OUT -> IN[1] test_01_upper_cmp EQUAL -> RESULT _(test/result)
+
+test_02 OUT -> IN test_02_lower(string/lowercase)
+test_02_lower_expected(constant/string:value="cccccc") OUT -> IN[0] test_02_lower_cmp(string/compare)
+test_02_lower OUT -> IN[1] test_02_lower_cmp EQUAL -> RESULT _(test/result)
+
+test_02 OUT -> IN test_02_upper(string/uppercase)
+test_02_upper_expected(constant/string:value="CCCCCC") OUT -> IN[0] test_02_upper_cmp(string/compare)
+test_02_upper OUT -> IN[1] test_02_upper_cmp EQUAL -> RESULT _(test/result)
+
+test_03 OUT -> IN test_03_lower(string/lowercase)
+test_03_lower_expected(constant/string:value="ssssss") OUT -> IN[0] test_03_lower_cmp(string/compare)
+test_03_lower OUT -> IN[1] test_03_lower_cmp EQUAL -> RESULT _(test/result)
+
+test_03 OUT -> IN test_03_upper(string/uppercase)
+test_03_upper_expected(constant/string:value="SSSSSS") OUT -> IN[0] test_03_upper_cmp(string/compare)
+test_03_upper OUT -> IN[1] test_03_upper_cmp EQUAL -> RESULT _(test/result)

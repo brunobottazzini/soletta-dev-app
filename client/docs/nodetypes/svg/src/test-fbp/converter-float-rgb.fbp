@@ -1,0 +1,24 @@
+
+RedFloat(constant/float:value=20,value_spec=0|100|1)
+GreenFloat(constant/float:value=40,value_spec=0|100|1)
+BlueFloat(constant/float:value=70,value_spec=0|100|1)
+float_to_rgb(converter/float-to-rgb:red_max=100,green_max=200,blue_max=50)
+
+RedFloat OUT -> RED float_to_rgb
+GreenFloat OUT -> GREEN float_to_rgb
+BlueFloat OUT -> BLUE float_to_rgb
+
+float_red(constant/float:value=20)
+float_green(constant/float:value=80)
+float_blue(constant/float:value=35)
+
+float_to_rgb OUT -> IN rgb_to_float(converter/rgb-to-float)
+
+rgb_to_float RED -> IN[0] eq_twenty(float/equal)
+float_red OUT -> IN[1] eq_twenty OUT -> RESULT red(test/result)
+
+rgb_to_float GREEN -> IN[0] eq_eighty(float/equal)
+float_green OUT -> IN[1] eq_eighty OUT -> RESULT green(test/result)
+
+rgb_to_float BLUE -> IN[0] eq_thirty_five(float/equal)
+float_blue OUT -> IN[1] eq_thirty_five OUT -> RESULT blue(test/result)

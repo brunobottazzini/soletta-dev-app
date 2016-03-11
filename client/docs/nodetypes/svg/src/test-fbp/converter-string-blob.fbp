@@ -1,0 +1,7 @@
+
+const_str(constant/string:value="hello world")
+str_to_blob(converter/string-to-blob)
+blob_validator(test/blob-validator:expected="hello world",expect_terminating_null_byte=true)
+
+const_str OUT -> IN str_to_blob OUT -> IN blob_validator
+blob_validator OUT -> RESULT string_converts_to_blob(test/result)

@@ -1,0 +1,27 @@
+
+RedInt(constant/int:value=20,value_spec=0|100|1)
+GreenInt(constant/int:value=40,value_spec=0|100|1)
+BlueInt(constant/int:value=70,value_spec=0|100|1)
+int_to_rgb(converter/int-to-rgb:red_max=100,green_max=200,blue_max=50)
+
+RedInt OUT -> RED int_to_rgb
+GreenInt OUT -> GREEN int_to_rgb
+BlueInt OUT -> BLUE int_to_rgb
+
+twenty(constant/int:value=20)
+eighty(constant/int:value=80)
+thirty_five(constant/int:value=35)
+
+int_to_rgb OUT -> IN rgb_to_int(converter/rgb-to-int)
+
+rgb_to_int RED -> IN[0] eq_twenty(int/equal)
+twenty OUT -> IN[1] eq_twenty OUT -> RESULT red(test/result)
+
+rgb_to_int GREEN -> IN[0] eq_eighty(int/equal)
+eighty OUT -> IN[1] eq_eighty OUT -> RESULT green(test/result)
+
+rgb_to_int BLUE -> IN[0] eq_thirty_five(int/equal)
+thirty_five OUT -> IN[1] eq_thirty_five OUT -> RESULT blue(test/result)
+
+
+

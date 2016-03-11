@@ -1,0 +1,5 @@
+
+reader(file/reader)
+blob_validator(test/blob-validator:expected="test validator data")
+file(constant/string:value="test-blob-data.txt") OUT -> PATH reader
+reader OUT -> IN blob_validator OUT -> RESULT test_reader(test/result)

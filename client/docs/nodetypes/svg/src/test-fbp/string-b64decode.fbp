@@ -1,0 +1,9 @@
+
+hello_world(constant/string:value="Hello World")
+hello_world_as_b64(constant/string:value="SGVsbG8gV29ybGQ=")
+
+hello_world_as_b64 OUT -> IN b64dec(string/b64decode)
+
+b64dec STRING -> IN[0] hello_world_string_cmp(string/compare)
+hello_world OUT -> IN[1] hello_world_string_cmp
+hello_world_string_cmp EQUAL -> RESULT _(test/result)

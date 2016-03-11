@@ -1,0 +1,16 @@
+
+unsetenv(app/unsetenv:variable_name="SOLETTA_TEST_VAR123")
+varvalue(constant/string:value="Hello World")
+varname(constant/string:value="SOLETTA_TEST_VAR123")
+setenv(app/setenv)
+getenv(app/getenv)
+
+varname OUT -> NAME setenv
+varvalue OUT -> VALUE setenv
+
+varname OUT -> NAME getenv
+
+getenv VALUE -> IN[0] cmp(string/compare)
+varvalue OUT -> IN[1] cmp
+
+cmp EQUAL -> RESULT test_setenv(test/result)

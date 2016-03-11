@@ -1,0 +1,5 @@
+
+true(constant/boolean:value=true)
+
+true OUT -> RESULT test_using_result(test/result)
+true OUT -> PASS test_using_pass(test/result)

@@ -1,0 +1,12 @@
+
+const_rad(constant/float:value=1)
+
+deg_to_rad(trigonometry/degrees-to-radian)
+rad_to_deg(trigonometry/radian-to-degrees)
+
+equal_conversion(float/equal)
+
+const_rad OUT -> IN rad_to_deg OUT -> IN deg_to_rad OUT -> IN[0] equal_conversion
+const_rad OUT -> IN[1] equal_conversion
+
+equal_conversion OUT -> RESULT _(test/result)

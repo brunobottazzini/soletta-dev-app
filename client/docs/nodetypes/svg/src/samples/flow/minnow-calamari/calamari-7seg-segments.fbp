@@ -1,0 +1,27 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Write 'Play' on Intel MinnowBoard's Calamari Lure 7-segment display.
+
+Led(SevenSegments)
+Timer(timer:interval=2000)
+Switcher(switcher/byte:keep_state=true)
+Index(int/accumulator:setup_value=min:0|max:4)
+
+ByteOff(constant/byte:value=0)
+ByteP(led-7seg/char-to-byte)
+ByteL(led-7seg/char-to-byte)
+ByteA(led-7seg/char-to-byte)
+ByteY(led-7seg/char-to-byte)
+
+Timer OUT -> INC Index OUT -> IN_PORT Switcher
+Switcher OUT[0] -> SEGMENTS Led
+
+ByteOff OUT -> IN[0] Switcher
+_(constant/string:value="P") OUT -> IN ByteP
+ByteP OUT -> IN[1] Switcher
+_(constant/string:value="l") OUT -> IN ByteL
+ByteL OUT -> IN[2] Switcher
+_(constant/string:value="a") OUT -> IN ByteA
+ByteA OUT -> IN[3] Switcher
+_(constant/string:value="y") OUT -> IN ByteY
+ByteY OUT -> IN[4] Switcher

@@ -1,0 +1,43 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This will wait for 3 seconds, then scan for OIC lights.
+# The oic node type and IO node types are resolved by
+# sol-flow.json, using gtk backend, or sol-flow-intel-edison-rev-c.json /
+# sol-flow-intel-galileo-rev-g.json
+#
+# To run this sample in Intel Edison or Intel Galileo Gen2 boards,
+# connect an LCD to I2C port, 3 buttons in ports IO3 (next), IO4 (select)
+# and IO7 (light) and a LED to IO8.
+#
+# Then run:
+#
+#    $ ./light-client-scan.fbp
+
+#Input/Output nodes
+lcd(LCD)
+next(BtnNext)
+select(BtnSelect)
+light_button(BtnLight)
+status(LEDStatus)
+_(constant/boolean:value=false) OUT -> IN status
+
+wait(constant/string:value="Wait...") OUT -> IN lcd
+
+#Scanning
+light(oic/client-light)
+light_selector(form/selector:rows=2,columns=16,circular=true)
+
+scan(timer:interval=3000) OUT -> SCAN light
+light DEVICE_ID -> ADD_ITEM light_selector
+light_selector STRING -> IN lcd
+scan OUT -> IN _(converter/empty-to-boolean:output_value=false) OUT -> ENABLED scan
+
+next OUT -> PULSE_IF_TRUE _(converter/boolean-to-empty) OUT -> NEXT light_selector
+select OUT -> PULSE_IF_TRUE _(converter/boolean-to-empty) OUT -> SELECT light_selector
+light OUT_STATE -> IN status
+light_button OUT -> PULSE_IF_TRUE _(converter/boolean-to-empty) OUT -> IN toggle(boolean/toggle) OUT -> IN_STATE light
+
+#DeviceID Persistence
+light_selector SELECTED -> IN persistence(DeviceIDPersistence)
+persistence OUT -> DEVICE_ID light
+persistence OUT -> SELECTED light_selector

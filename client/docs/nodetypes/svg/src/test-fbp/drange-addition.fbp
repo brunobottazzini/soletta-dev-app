@@ -1,0 +1,15 @@
+
+v0(constant/float:value=1.5)
+v2_0(constant/float:value=5.20)
+v2_1(constant/float:value=7)
+v1(constant/float:value=3.1415)
+v2_2(constant/float:value=9)
+add(float/addition)
+validator(test/float-validator:sequence="11.6415 13.6415")
+
+v0 OUT -> OPERAND[0] add
+v2_0 OUT -> OPERAND[25] add
+v2_1 OUT -> OPERAND[25] add
+v1 OUT -> OPERAND[1] add
+v2_2 OUT -> OPERAND[25] add
+add OUT -> IN validator OUT -> RESULT float_addition_multiple(test/result)

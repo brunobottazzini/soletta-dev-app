@@ -1,0 +1,9 @@
+#!/usr/bin/env sol-fbp-runner
+#
+
+process(process/subprocess:command="/usr/bin/bc -i",start=false) STATUS -> IN output(console:prefix="status: ")
+start(constant/int:value=5) OUT -> START process
+input(process/stdin) OUT -> STDIN process
+
+process STDOUT -> IN stdout(process/stdout)
+process STDERR -> IN stderr(process/stderr)

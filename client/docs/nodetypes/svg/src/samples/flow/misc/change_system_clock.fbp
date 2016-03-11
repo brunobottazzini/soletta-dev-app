@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+
+# Usage: sol-fbp-runner change_system_clock.fbp TIMESTAMP
+# This FBP will change the system clock of the current machine.
+# Changing the system clock may require administrator privileges
+
+_(constant/string:value="The new system clock is: ") OUT -> IN[0] text(string/concatenate)
+_(app/argv:index=1) OUT -> IN _(converter/string-to-int) OUT -> IN _(platform/system-clock) OUT -> IN StrToInt(converter/int-to-string)
+StrToInt OUT -> IN[1] text
+text OUT -> IN _(console)

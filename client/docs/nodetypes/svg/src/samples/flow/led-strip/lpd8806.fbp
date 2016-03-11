@@ -1,0 +1,35 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Maps temperature readings (here, fake ones) to led colours on a
+# led-strip. The hotter the temperature, the more led will be red. The
+# remaining ones will be blue.
+
+# These three fake the output of a temperature sensor
+timer(timer)
+random(random/int)
+temp(int/map:output_range=min:-40|max:100|step:1)
+
+# These are the ones needed to our flow
+# led_map maps the expected temperature readings, from -40 to 100, to
+# a number up to 31, meaning how many leds will be red.
+led_map(int/map:use_input_range=false,input_range=min:-40|max:100,output_range=min:0|max:31|step:1)
+less(int/less)
+counter(int/accumulator:setup_value=max:31)
+blue(converter/empty-to-rgb:output_value=blue:200|green:0|red:0)
+red(converter/empty-to-rgb:output_value=red:200|green:0|blue:0)
+led_strip(led-strip/lpd8806)
+
+temp OUT -> IN led_map
+led_map OUT -> INC counter
+
+led_map OUT -> IN[0] less
+counter OUT -> IN _(int/filter:min=1,max=31) OUT -> IN[1] less
+counter OUT -> PIXEL led_strip
+
+less OUT -> IN _(boolean/filter) TRUE -> IN red OUT -> COLOR led_strip
+less OUT -> IN _(boolean/filter) FALSE -> IN blue OUT -> COLOR led_strip
+
+less OUT ->  INC counter
+
+counter OVERFLOW -> FLUSH led_strip
+counter OVERFLOW -> RESET counter

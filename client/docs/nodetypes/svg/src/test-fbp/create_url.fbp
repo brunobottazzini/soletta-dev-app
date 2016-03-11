@@ -1,0 +1,36 @@
+
+DECLARE=Param:composed-new:KEY(string)|VALUE(string)
+
+UrlNoParams(http-client/create-url) OUT -> IN[0] CmpNoParams(string/compare) EQUAL -> RESULT UrlNoParamsTest(test/result)
+UrlNoParamsString(constant/string:value="http://www.example.com") OUT -> IN[1] CmpNoParams
+UrlNoParamsString OUT -> BASE_URI UrlNoParams
+UrlNoParamsString OUT -> CREATE UrlNoParams
+
+UrlWithParams(http-client/create-url:base_uri="http://www.example.com/GOAS") OUT -> IN[0] CmpWithParams(string/compare) EQUAL -> RESULT UrlWithParamsTest(test/result)
+
+EncodedParam(Param) OUT -> PARAM UrlWithParams
+NotEncodedParam(Param) OUT -> PARAM UrlWithParams
+
+_(constant/string:value="This Key Should be encoded !!*/&%$$¨") OUT -> KEY EncodedParam
+_(constant/string:value="My precious value %#&**(),,") OUT -> VALUE EncodedParam
+
+_(constant/string:value="SimpleKey") OUT -> KEY NotEncodedParam
+_(constant/string:value="SimpleValue") OUT -> VALUE NotEncodedParam
+
+_(constant/string:value="/go") OUT -> PATH UrlWithParams
+
+_(constant/string:value="MyFragment") OUT -> FRAGMENT UrlWithParams
+
+_(constant/int:value=1234) OUT -> PORT UrlWithParams
+
+NotEncodedParam OUT -> CREATE UrlWithParams
+
+_(constant/string:value="http://www.example.com:1234/go?This%20Key%20Should%20be%20encoded%20%21%21%2A%2F%26%25%24%24%C2%A8=My%20precious%20value%20%25%23%26%2A%2A%28%29%2C%2C&SimpleKey=SimpleValue#MyFragment") OUT -> IN[1] CmpWithParams
+
+UrlWithParams2(http-client/create-url:base_uri="http://www.example.com", query="key=My value&b=3&go") OUT -> IN[0] CmpWithParams2(string/compare) EQUAL -> RESULT UrlWithParamsTest2(test/result)
+
+_(constant/string:value="user") OUT -> USER UrlWithParams2
+_(constant/string:value="password") OUT -> PASSWORD UrlWithParams2
+
+_(constant/string:value="http://user:password@www.example.com?key=My%20value&b=3&go") OUT -> IN[1] CmpWithParams2
+_(constant/empty) OUT -> CREATE UrlWithParams2

@@ -1,0 +1,10 @@
+#!/usr/bin/env sol-fbp-runner
+
+
+# Usage: sol-fbp-runner change_timezone.fbp TIMEZONE
+# This FBP will change the timezone of the current machine.
+# Changing the timezone may require administrator privileges
+
+_(constant/string:value="The new timezone is: ") OUT -> IN[0] text(string/concatenate)
+_(app/argv:index=1) OUT -> IN _(platform/timezone) OUT -> IN[1] text
+text OUT -> IN _(console)

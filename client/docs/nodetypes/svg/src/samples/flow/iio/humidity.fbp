@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Print iio humidity reading each second
+# iio_device: will first try any device whose name is 'si7020'. If fails,
+# will try to create it using the 'create' command. If it fails, tries
+# IIO device whose id is '0'.
+
+humidity(MyHumidity)
+timer(timer)
+
+timer OUT -> TICK humidity OUT -> IN _(console)

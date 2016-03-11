@@ -1,0 +1,54 @@
+#!/usr/bin/env sol-fbp-runner
+
+Split(timestamp/split-time)
+MkTime(timestamp/make-time)
+
+Year(constant/int:value=2015)
+Month(constant/int:value=8)
+Day(constant/int:value=26)
+Hour(constant/int:value=15)
+Minute(constant/int:value=20)
+Second(constant/int:value=59)
+NanoSecond(constant/int:value=654321)
+
+EqualYear(int/equal)
+EqualMonth(int/equal)
+EqualDay(int/equal)
+EqualHour(int/equal)
+EqualMinute(int/equal)
+EqualSecond(int/equal)
+EqualNanoSecond(int/equal)
+
+Year OUT -> IN[0] EqualYear
+Month OUT -> IN[0] EqualMonth
+Day OUT -> IN[0] EqualDay
+Hour OUT -> IN[0] EqualHour
+Minute OUT -> IN[0] EqualMinute
+Second OUT -> IN[0] EqualSecond
+NanoSecond OUT -> IN[0] EqualNanoSecond
+
+Year OUT -> YEAR MkTime
+Month OUT -> MONTH MkTime
+Day OUT -> MONTH_DAY MkTime
+Hour OUT -> HOUR MkTime
+Minute OUT -> MINUTE MkTime
+Second OUT -> SECOND MkTime
+NanoSecond OUT -> NANO_SECOND MkTime
+
+MkTime OUT -> IN Split
+
+Split YEAR -> IN[1] EqualYear
+Split MONTH -> IN[1] EqualMonth
+Split MONTH_DAY -> IN[1] EqualDay
+Split HOUR -> IN[1] EqualHour
+Split MINUTE -> IN[1] EqualMinute
+Split SECOND -> IN[1] EqualSecond
+Split NANO_SECOND -> IN[1] EqualNanoSecond
+
+EqualYear OUT -> RESULT result_year(test/result)
+EqualMonth OUT -> RESULT result_month(test/result)
+EqualDay OUT -> RESULT result_day(test/result)
+EqualHour OUT -> RESULT result_hour(test/result)
+EqualMinute OUT -> RESULT result_minute(test/result)
+EqualSecond OUT -> RESULT result_second(test/result)
+EqualNanoSecond OUT -> RESULT result_nano_second(test/result)

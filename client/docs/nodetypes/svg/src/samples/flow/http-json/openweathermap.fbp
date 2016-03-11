@@ -1,0 +1,26 @@
+
+DECLARE=UrlParam:composed-new:KEY(string)|VALUE(string)
+
+INPORT=param_appid.VALUE:APPID
+INPORT=param_location.VALUE:LOCATION
+OUTPORT=temp.CELSIUS:TEMP_AVG
+OUTPORT=temp_low.CELSIUS:TEMP_LOW
+OUTPORT=temp_high.CELSIUS:TEMP_HIGH
+
+#build URL
+url(http-client/create-url:base_uri="http://api.openweathermap.org/data/2.5/weather")
+param_appid(UrlParam) OUT -> PARAM url
+param_location(UrlParam) OUT -> PARAM url
+param_location OUT -> CREATE url
+
+_(constant/string:value="appid") OUT -> KEY param_appid
+_(constant/string:value="q") OUT -> KEY param_location
+
+#Make request
+url OUT -> URL result(http-client/get-json)
+url OUT -> GET result
+
+#Parse results
+result OBJECT -> IN _(json/object-get-path:path="$.main.temp") FLOAT -> KELVIN temp(temperature/converter)
+result OBJECT -> IN _(json/object-get-path:path="$.main.temp_min") FLOAT -> KELVIN temp_low(temperature/converter)
+result OBJECT -> IN _(json/object-get-path:path="$.main.temp_max") FLOAT -> KELVIN temp_high(temperature/converter)

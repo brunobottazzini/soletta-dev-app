@@ -1,0 +1,6 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Reads a float (sol_drange) from socket and prints to console.
+# See float-writer.fbp, that should be executed before this.
+
+socket_float(unix-socket/float-reader:path=/tmp/float_socket) OUT -> IN console(console)

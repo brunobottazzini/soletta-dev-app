@@ -1,0 +1,12 @@
+
+counter(boolean/counter)
+
+false_1(constant/boolean:value=false) OUT -> IN counter
+true_1(constant/boolean:value=true) OUT -> IN counter
+true_2(constant/boolean:value=true) OUT -> IN counter
+
+false_validator(test/int-validator:sequence="1 1 1")
+true_validator(test/int-validator:sequence="0 1 2")
+
+counter TRUE -> IN true_validator OUT -> RESULT true_counter(test/result)
+counter FALSE -> IN false_validator OUT -> RESULT false_counter(test/result)

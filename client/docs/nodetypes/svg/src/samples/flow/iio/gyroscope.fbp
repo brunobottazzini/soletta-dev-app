@@ -1,0 +1,11 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Print iio gyroscope reading each second
+# iio_device: will first try any device whose name is 'l3g4200d'. If fails,
+# will try to create it using the 'create' command. If it fails, tries
+# IIO device whose id is '0'.
+
+gyro(MyGyroscope)
+timer(timer)
+
+timer OUT -> TICK gyro OUT -> IN _(console)

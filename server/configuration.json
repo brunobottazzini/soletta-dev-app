@@ -8,7 +8,7 @@
     "run_fbp_access": true,
     "login_system": false,
     "image_build": true,
-    "cheat_sheet_url": "http://solettaproject.github.io/docs/nodetypes",
+    "cheat_sheet_url": "http://localhost:8080/docs/nodetypes",
     "journal_refresh_period": 3000,
     "fbp_service_status_refresh_period": 1000,
     "syntax_check_refresh_period": 1100,

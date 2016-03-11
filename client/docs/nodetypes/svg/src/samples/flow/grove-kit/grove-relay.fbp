@@ -1,0 +1,8 @@
+#!/usr/bin/env sol-fbp-runner
+
+# sol-fbp-runner grove-relay.fbp
+
+# This is a translation of Grove_Relay/Grove_Relay.ino, from
+# https://github.com/Seeed-Studio/Sketchbook_Starter_Kit_for_Arduino.git
+
+button(Button) OUT -> IN relay(Relay)

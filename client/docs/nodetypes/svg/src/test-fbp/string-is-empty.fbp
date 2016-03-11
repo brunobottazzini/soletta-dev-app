@@ -1,0 +1,9 @@
+
+non_empty_string(constant/string:value="Ħěĺļō Ɯőŗŀď")
+empty_string(constant/string:value="")
+
+non_empty_string OUT -> IN test_non_empty(string/is-empty)
+test_non_empty OUT -> IN _(boolean/not) OUT -> RESULT _(test/result)
+
+empty_string OUT -> IN test_empty(string/is-empty)
+test_empty OUT -> RESULT _(test/result)

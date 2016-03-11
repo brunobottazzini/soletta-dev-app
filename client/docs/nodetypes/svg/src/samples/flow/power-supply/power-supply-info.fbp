@@ -1,0 +1,24 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This program will print power supply information:
+# model name, manufacturer and serial number.
+#
+# Example:
+#    $ ./power-supply-info.fbp BAT0
+
+name(app/argv:index=1)
+error-msg(converter/empty-to-string:output_value="Power supply name is mandatory")
+Error(console)
+quit(app/quit)
+info(power-supply/get-info)
+tick(constant/empty)
+
+name ERROR -> IN error-msg OUT -> IN Error
+info ERROR -> ERROR quit
+
+name OUT -> NAME info
+tick OUT -> TRIGGER info
+
+info MODEL -> IN ModelName(console)
+info MANUFACTURER -> IN Manufacturer(console)
+info SERIAL -> IN SerialNumber(console)

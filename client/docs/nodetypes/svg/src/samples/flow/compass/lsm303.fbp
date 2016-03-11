@@ -1,0 +1,15 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Read accelerometer and magnetometer measures of an LSM303LDHC device
+# and send them to a accelerometer-magnetometer compass, which prints
+# North Pode heading in degrees besides a direction-vector.
+
+accel(accelerometer/lsm303:i2c_bus=0)
+mag(accelerometer/lsm303:i2c_bus=0)
+compass(compass/accelerometer-magnetometer)
+
+accel OUT -> ACCELEROMETER compass
+mag OUT -> MAGNETOMETER compass
+
+compass VECTOR -> IN _(console)
+compass HEADING -> IN _(console)

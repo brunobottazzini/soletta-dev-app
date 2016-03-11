@@ -1,0 +1,7 @@
+#!/usr/bin/env sol-fbp-runner
+
+# Reads key 'a' (code 97) from keyboard (stdin) and toggles state,
+# sending to the socket.
+# See boolean-reader.fbp
+
+keyboard(keyboard/boolean:binary_code=97,toggle=true) OUT -> IN socket_boolean(unix-socket/boolean-writer:path=/tmp/boolean_socket)

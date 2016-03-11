@@ -1,0 +1,25 @@
+
+boiling_point_water_c(constant/float:value=99.9839)
+boiling_point_water_k(constant/float:value=373.1339)
+boiling_point_water_f(constant/float:value=211.97102)
+boiling_point_water_r(constant/float:value=671.64102)
+
+converter(temperature/converter)
+
+boiling_point_water_k OUT -> KELVIN converter
+
+converter CELSIUS -> IN[0] cmp_celsius(float/equal)
+boiling_point_water_c OUT -> IN[1] cmp_celsius
+cmp_celsius OUT -> RESULT result_celsius(test/result)
+
+converter KELVIN -> IN[0] cmp_kelvin(float/equal)
+boiling_point_water_k OUT -> IN[1] cmp_kelvin
+cmp_kelvin OUT -> RESULT result_kelvin(test/result)
+
+converter RANKINE -> IN[0] cmp_rankine(float/equal)
+boiling_point_water_r OUT -> IN[1] cmp_rankine
+cmp_rankine OUT -> RESULT result_rankine(test/result)
+
+converter FAHRENHEIT -> IN[0] cmp_fahrenheit(float/equal)
+boiling_point_water_f OUT -> IN[1] cmp_fahrenheit
+cmp_fahrenheit OUT -> RESULT result_fahrenheit(test/result)

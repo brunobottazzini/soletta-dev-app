@@ -1,0 +1,6 @@
+#!/usr/bin/env sol-fbp-runner
+
+# This example links the Calamari lever (SPI) to the 7segment display,
+# displaying the level from 0-15 (in hexadecimal)
+
+lever(SegmentsLever) OUT -> VALUE seven_segments(SevenSegments)
