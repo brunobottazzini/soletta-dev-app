@@ -1,5 +1,6 @@
 {
     "server_port": 8080,
+    "inspector_port": 8081,
     "server_output": true,
     "server_user_home_dir": "/tmp",
     "sessions_dir" : "./sessions",

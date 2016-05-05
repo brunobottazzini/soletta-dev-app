@@ -17,19 +17,33 @@
 # limitations under the License.
 export SOL_LOG_PRINT_FUNCTION="journal"
 
-SCRIPT="$3"
 ENV_PATH="$2"
 SERVICE="fbp-runner@"$(systemd-escape $ENV_PATH)
+INSPECTOR=$(cat $ENV_PATH | grep INSPECTOR | awk -F\-W {'print $2'})
+PORT=${INSPECTOR::-1}
+
+monitor_inspect_port() {
+   RETRIES=0
+   MAX_RETRY=10
+   while [ $RETRIES -lt $MAX_RETRY ]; do
+       PORT_STATE=$(netstat -an | grep ":$PORT " | grep "LISTEN")
+       if [ -n "$PORT_STATE" ]; then
+          exit 0
+       fi
+       usleep 500000 # Sleep haf second
+       RETRIES=`expr $RETRIES + 1`
+   done
+   exit 1
+}
 
 systemctl stop $SERVICE
 
 if [ $1 == "start" ]; then
-    syntax=`sol-fbp-runner -c $SCRIPT | grep OK`
     systemctl $1 $SERVICE
-    if [ -n "$syntax" ]; then
+    if [ -z "$PORT" ]; then
         exit 0
     else
-        exit 1
+        monitor_inspect_port
     fi
 else
     st=`systemctl status $SERVICE | grep "Active:"`

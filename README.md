@@ -114,6 +114,9 @@ If no argument is provided it will get the default server configuration file.
     server_port:
          The port listened by the server. Default: 80
 
+    inspector_port:
+         The poart that will run Soletta's web inspector. Default: 8080
+
     server_output:
           Choose if you want the server to show its output.
           Default: true

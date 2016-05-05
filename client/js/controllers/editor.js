@@ -17,10 +17,10 @@
 (function() {
     'use strict';
     app.controller ('editor', ['$compile', '$scope', '$http', '$interval',
-        '$document', 'broadcastService', 'FetchFileFactory',
+        '$document', '$window', '$location','broadcastService', 'FetchFileFactory',
         'usSpinnerService', 'svConf',
-        function ($compile, $scope, $http, $interval, $document, broadcastService,
-                  FetchFileFactory, usSpinnerService, svConf) {
+        function ($compile, $scope, $http, $interval, $document, $window, $location,
+                  broadcastService, FetchFileFactory, usSpinnerService, svConf) {
                 var isRunningSyntax = false;
                 var promiseCheckSyntax;
                 var promiseServiceStatus;
@@ -47,6 +47,7 @@
                     if ($scope.runJournal === true) {
                         $scope.startServiceStatus();
                     }
+                    $scope.inspectorPort = data.inspector_port;
                 });
                 $scope.showhideCode = "Hide Code Viewer";
                 $scope.showhideFlow = "Hide Flow Viewer";
@@ -261,7 +262,14 @@
                     }
                 });
 
-                $scope.openRunDialog = function() {
+                $scope.redirectToInspector = function() {
+                    var host = $location.host();
+                    var protocol = $location.protocol();
+                    var port = $scope.inspectorPort;
+                    $window.open(protocol + "://" +  host + ":" + port, '_blank');
+                };
+
+                $scope.openRunDialog = function(error) {
                     var dialog = $('<div></div>').html($compile('<table cellpadding="0" cellspacing="0" border="0"' +
                                                                 'class="table table-hover data-table sort display"' +
                                                                 'style="font-size: 12px !important; background-color:#262a2e;'+ 'color:#afb2b6;">'+
@@ -300,6 +308,9 @@
                             });
                     $scope.getOutput();
                     dialog.dialog("open");
+                    if ($scope.inspector === true && error === false) {
+                        $scope.redirectToInspector();
+                    }
                     promiseRunViewer = $interval(function () { $scope.getOutput(); }, $scope.runDialogRefreshPeriod);
                 };
 
@@ -347,6 +358,7 @@
                             $scope.runningStartStop = true;
                             var fbpCode = editor.getSession().getValue();
                             var fbpName = $scope.fileName;
+                            var inspector;
                             $scope.newFile = true;
                             var conf = $scope.selectConfigPath;
                             if (conf === "none") {
@@ -360,17 +372,18 @@
                                         "fbp_name": fbpName,
                                         "fbp_path": filePath,
                                         "code": fbpCode,
+                                        "inspector": $scope.inspector,
                                         "conf": conf
                                     }
                             }).success(function(data) {
                                 if (data) {
-                                    $scope.openRunDialog();
+                                    $scope.openRunDialog(false);
                                 } else {
-                                    alert("FBP Failed to run");
+                                    alert("ERROR: Failed to run FBP (" + data + ")");
                                 }
                                 $scope.runningStartStop = false;
-                            }).error(function(){
-                                $scope.openRunDialog();
+                            }).error(function(data){
+                                $scope.openRunDialog(true);
                                 $scope.runningStartStop = false;
                             });
                         }

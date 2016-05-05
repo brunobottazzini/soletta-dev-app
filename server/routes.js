@@ -201,25 +201,36 @@
             var path = req.body.params.fbp_path;
             var code = req.body.params.code;
             var conf = req.body.params.conf;
+            var inspector = req.body.params.inspector;
             if (!path || !code) {
                 res.sendStatus(1);
             } else {
                 var child;
                 var err;
                 var stdout = "";
+                var inspector_port = "";
                 var script = scripts_dir() + "/fbp-runner.sh";
                 var fbp_path = generateHiddenPath(path);
                 if (fbp_path) {
                     err = writeFile(fbp_path, code);
                     script = script + ' start ' + env_file(current_user(req)) + ' ' +  fbp_path;
+
+                    if (inspector) {
+                        inspector_port = "-W" + jConf.inspector_port;
+                    }
+
                     if (conf) {
                         err = writeFile(env_file(current_user(req)),
-                                       'FBP_FILE="' + fbp_path + '"\n' +
-                                       'SOL_FLOW_MODULE_RESOLVER_CONFFILE="' + conf + '"');
+                                        'FBP_FILE="' + fbp_path + '"\n' +
+                                        'INSPECTOR="'+ inspector_port + '"\n' +
+                                        'SOL_FLOW_MODULE_RESOLVER_CONFFILE="' +
+                                          conf + '"');
                     } else {
                         err = writeFile(env_file(current_user(req)),
-                                     'FBP_FILE="' + fbp_path + '"\n');
+                                        'FBP_FILE="' + fbp_path + '"\n' +
+                                        'INSPECTOR="'+ inspector_port + '"\n');
                     }
+
                     if (!err) {
                         getConfigureFile(current_user(req), conf, function (error) {
                             child = exec("sh " + script);

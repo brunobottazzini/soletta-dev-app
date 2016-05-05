@@ -84,6 +84,16 @@ tbody {
   text-align: center;
   width: 140px;
 }
+
+md-checkbox.md-checked.blue .md-icon {
+    background-color: #00AEFF;
+    min-height: 0px !important;
+}
+
+md-checkbox.md-checked.blue .md-ink-ripple {
+    color: #00AEFF;
+}
+
 .menu-item-selected{
   background-color: #2d3237;
   border-top: 4px solid #33b7e9;
