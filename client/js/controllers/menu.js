@@ -16,15 +16,23 @@
 
 (function() {
     'use strict';
-    app.controller ('menuController', ['$scope', 'svConf',
-        function ($scope, svConf) {
+    app.controller ('menuController', ['$scope', 'svConf', 'broadcastService',
+        function ($scope, svConf, broadcastService) {
             $scope.cheat_sheet = false;
             $scope.journal = false;
+            $scope.inspectorDiv = false;
             svConf.fetchConf().success(function(data){
                 $scope.cheat_sheet = data.cheat_sheet_access;
                 $scope.journal = data.journal_access;
             });
 
+            $scope.$on('showInspectorDiv', function(){
+                $scope.inspectorDiv = true;
+            });
+
+            $scope.$on('hideInspectorDiv', function(){
+                $scope.inspectorDiv = false;
+            })
         }]);
 }());
 

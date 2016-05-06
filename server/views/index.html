@@ -73,6 +73,7 @@
                 $('#sj').hide();
                 $('#fe').hide();
                 hide($('#sc'));
+                hide($('#is'));
 
                 currentMenu.addClass('menu-item-selected');
 
@@ -80,7 +81,7 @@
                 $('.menu-item').on('click',function(event){
 
                     //clearing old references
-                    if (currentContent.attr("id") === "sc") {
+                    if (currentContent.attr("id") === "sc" || currentContent.attr("id") === "is") {
                         hide(currentContent);
                     } else {
                         currentContent.hide();
@@ -93,8 +94,7 @@
                     currentContent = $('#' + (currentMenu).attr('id').substr(5));
 
                     currentMenu.addClass('menu-item-selected');
-                    console.log(currentContent);
-                    if (currentContent.attr("id") === "sc") {
+                    if (currentContent.attr("id") === "sc" || currentContent.attr("id") === "is") {
                         show(currentContent);
                     } else {
                         currentContent.show();
@@ -153,6 +153,7 @@
         <!-- NAVIGATION MENU !-->
         <div ng-controller="menuController" id="top-menu">
             <div align="center" class='menu-item' id='menu-cb'>EDITOR</div>
+            <div  align="center" ng-class="{'enable_div': inspectorDiv == true, 'disable_div': inspectorDiv == false}" class='menu-item' id='menu-is'>INSPECTOR</div>
             <div  align="center" ng-class="{'enable_div': journal == true, 'disable_div': journal == false}" class='menu-item' id='menu-sj'>JOURNAL</div>
             <div  align="center" ng-class="{'enable_div': cheat_sheet == true, 'disable_div': cheat_sheet == false}" class='menu-item' id='menu-sc'>CHEAT SHEET</div>
         </div>
@@ -163,7 +164,9 @@
                 <!-- -------------------------------------------------------------- !-->
                 <!-- Editor !-->
                 <!-- -------------------------------------------------------------- !-->
-                <div ng-controller="editor as ctrl" id="cb">
+                <div ng-controller="editor as ctrl"> <div id="cb">
+                <!-- Start wraping Editor and Inspector controllers for editor -->
+
                     <!-- TOP OF THE PAGE !-->
                     <div class="container" style="width: 100%; height: 56px; background-color: #2D3237 !important;">
 
@@ -332,7 +335,14 @@
                 </div>
             </div> <!--close tabcontents !-->
 
-
+            <!-- -------------------------------------------------------------- !-->
+            <!-- INSPECTOR !-->
+            <!-- -------------------------------------------------------------- !-->
+            <div id="is" class="systemd-journald">
+                <iframe style="width:100%; height:90%;" ng-src="{{inspectorUrl}}"></iframe>
+            </div>
+         <!-- Ending wraping tab for editor controller -->
+         </div>
 
             <!-- -------------------------------------------------------------- !-->
             <!-- SYSTEMD JOURNAL !-->

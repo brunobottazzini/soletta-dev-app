@@ -17,10 +17,10 @@
 (function() {
     'use strict';
     app.controller ('editor', ['$compile', '$scope', '$http', '$interval',
-        '$document', '$window', '$location','broadcastService', 'FetchFileFactory',
+        '$document', '$window', '$location', '$sce','broadcastService', 'FetchFileFactory',
         'usSpinnerService', 'svConf',
         function ($compile, $scope, $http, $interval, $document, $window, $location,
-                  broadcastService, FetchFileFactory, usSpinnerService, svConf) {
+                  $sce, broadcastService, FetchFileFactory, usSpinnerService, svConf) {
                 var isRunningSyntax = false;
                 var promiseCheckSyntax;
                 var promiseServiceStatus;
@@ -266,7 +266,9 @@
                     var host = $location.host();
                     var protocol = $location.protocol();
                     var port = $scope.inspectorPort;
-                    $window.open(protocol + "://" +  host + ":" + port, '_blank');
+                    broadcastService.prepForBroadcast("showInspectorDiv", null);
+                    $scope.inspectorUrl = $sce.trustAsResourceUrl(protocol + "://" +  host + ":" + port);
+                    $('#menu-is').click();
                 };
 
                 $scope.openRunDialog = function(error) {
@@ -306,10 +308,11 @@
                                     $(this).dialog("close");
                                 }
                             });
-                    $scope.getOutput();
-                    dialog.dialog("open");
                     if ($scope.inspector === true && error === false) {
                         $scope.redirectToInspector();
+                    } else {
+                        $scope.getOutput();
+                        dialog.dialog("open");
                     }
                     promiseRunViewer = $interval(function () { $scope.getOutput(); }, $scope.runDialogRefreshPeriod);
                 };
@@ -345,6 +348,9 @@
                 $scope.run = function() {
                     if (!$scope.runningStartStop) {
                         if ($scope.isServiceRunning) {
+                            $scope.inspectorUrl = $sce.trustAsResourceUrl("");
+                            broadcastService.prepForBroadcast("hideInspectorDiv", null);
+
                             //Post stop service
                             $scope.runningStartStop = true;
                             $http.post('/api/fbp/stop').success(function(data) {
@@ -393,10 +399,6 @@
                 $scope.newFbpFile = function() {
                     $scope.newFile = true;
                 };
-
-                $scope.$on('filePath', function () {
-                    filePath = broadcastService.message;
-                });
 
                 window.onbeforeunload = onBeforeUnload_Handler;
                 function onBeforeUnload_Handler() {
